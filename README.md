@@ -5,6 +5,8 @@ A React component to visualize Multiple Sequence Alignments (MSAs).
 
 __Work in progress - use with caution__
 
+Preview: https://msa.bio.sh
+
 ## Getting started
 
 ### Installation
