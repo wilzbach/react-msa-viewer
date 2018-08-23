@@ -10,6 +10,10 @@ const SequencePropType = PropTypes.shape({
   sequence: PropTypes.string,
 })
 
+const ViewpointType = PropTypes.shape({
+  width: PropTypes.number,
+  height: PropTypes.number,
+});
 
 class MSAViewer extends Component {
 
@@ -17,11 +21,16 @@ class MSAViewer extends Component {
     color: PropTypes.string,
     scheme: PropTypes.string,
     sequences: PropTypes.arrayOf(SequencePropType).isRequired,
+    sequences: ViewpointType,
   }
 
   static defaultProps = {
     color: "red",
     scheme: "clustal",
+    viewpoint: {
+      width: 500,
+      height: 100,
+    }
   }
 
   static fps = 60;
@@ -37,15 +46,14 @@ class MSAViewer extends Component {
     this.viewpoint = {
       pos: [0, 0],
       tileSizes: [20, 20],
-      width: 500,
-      height: 100,
+      width: this.props.viewpoint.width,
+      height: this.props.viewpoint.height,
     };
   }
 
   componentDidMount() {
     this.ctx = this.canvas.current.getContext('2d');
-    this.scheme = schemes.getScheme(this.props.scheme);
-    this.drawSequences();
+    this.draw();
     window.addEventListener('resize', this.handleResize)
     this.canvas.current.addEventListener('mousedown', this.handleMouseDown);
     this.canvas.current.addEventListener('mouseout', this.handleMouseOut);
@@ -57,6 +65,8 @@ class MSAViewer extends Component {
   }
 
   draw = () => {
+    // TODO: only update this if required
+    this.scheme = schemes.getScheme(this.props.scheme);
     this.ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
     this.drawSequences();
   }
@@ -171,20 +181,25 @@ class MSAViewer extends Component {
   }
 
   componentDidUpdate() {
-    // TODO
+    // TODO: smarter updates
+    this.draw();
   }
 
   shouldComponentUpdate(newProps) {
     // TODO: check recursively
-    return this.props.target !== newProps.target;
+    //return this.props.target !== newProps.target;
+    return true;
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
-    ['mouseout', 'mouseup', 'mousedown', 'click',
-     'touchstart', 'touchend', 'touchcancel'].forEach(e => {
-      this.canvas.current.removeEventListener(e);
-    });
+    window.removeEventListener('mouseout', this.handleMouseOut);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousedown', this.handleMouseDown);
+    window.removeEventListener('click', this.handleClick);
+    window.removeEventListener('touchstart', this.handleTouchStart);
+    window.removeEventListener('touchend', this.handleTouchEnd);
+    window.removeEventListener('touchcancel', this.handleTouchCancel);
     this.stopDragPhase();
   }
 

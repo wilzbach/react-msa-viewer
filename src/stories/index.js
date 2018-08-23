@@ -1,9 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {MSAViewer, MSASequence} from '../..';
+import {times} from 'lodash';
+import { select } from '@storybook/addon-knobs';
 
-storiesOf('Examples', module)
-  .add('Basic rendering', function(){
+storiesOf('Basic', module)
+  .add('Standard rendering', function(){
     const options = {
       scheme: "clustal",
       sequences: [
@@ -22,6 +24,56 @@ storiesOf('Examples', module)
         {
           name: "seq.4",
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+        },
+      ],
+    };
+    return (
+    <MSAViewer {...options} >
+    </MSAViewer>
+    )
+  })
+  .add('Big viewpoint', function(){
+    const options = {
+      scheme: "clustal",
+      sequences: [],
+      viewpoint: {
+        height: 500,
+        width: 500,
+      }
+    };
+    times(100, () => {
+      options.sequences.push({
+          name: "seq",
+          sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+      });
+    });
+    return (
+    <MSAViewer {...options} >
+    </MSAViewer>
+    )
+  })
+  .add('Colorschemes', function(){
+    // see https://github.com/wilzbach/msa-colorschemes for now
+    const colorschemes = [
+      "buried_index", "clustal", "clustal2",
+      "cinema", "helix_propensity", "hydro", "lesk", "mae", "nucleotide",
+      "purine_pyrimidine", "strand_propensity", "taylor", "turn_propensity",
+      "zappo",
+    ];
+    const options = {
+      scheme: select("Colorscheme", colorschemes, "zappo"),
+      sequences: [
+        {
+          name: "seq.1",
+          sequence: "MEEPQSDPSIEP"
+        },
+        {
+          name: "seq.2",
+          sequence: "MEEPQSDLSREL"
+        },
+        {
+          name: "seq.3",
+          sequence: "MERPQSDLSIEL"
         },
       ],
     };
