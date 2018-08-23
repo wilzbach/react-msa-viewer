@@ -31,6 +31,7 @@ class MSAViewer extends Component {
     viewpoint: {
       width: 500,
       height: 100,
+      tileSizes: [20, 20],
     }
   }
 
