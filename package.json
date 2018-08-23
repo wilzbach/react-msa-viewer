@@ -2,8 +2,9 @@
   "name": "msa",
   "version": "0.1.0",
   "private": true,
-  "main": "src/MSAViewer.js",
+  "main": "src/library.js",
   "dependencies": {
+    "lodash": "^4.17.10",
     "msa-colorschemes": "^1.0.10",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",

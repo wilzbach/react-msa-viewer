@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MSAViewer from './MSAViewer';
+import MSAViewer from './components/MSAViewer';
 
 class App extends Component {
   render() {
