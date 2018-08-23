@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {MSAViewer, MSASequence} from '../..';
 import {times} from 'lodash';
-import { select } from '@storybook/addon-knobs';
+import { select, number } from '@storybook/addon-knobs';
 
 storiesOf('Basic', module)
   .add('Standard rendering', function(){
@@ -37,8 +37,9 @@ storiesOf('Basic', module)
       scheme: "clustal",
       sequences: [],
       viewpoint: {
-        height: 500,
-        width: 500,
+        height: number("height", 500),
+        width: number("width", 500),
+        tileSizes: [number("xTileSize", 20), number("yTileSize", 20)],
       }
     };
     times(100, () => {

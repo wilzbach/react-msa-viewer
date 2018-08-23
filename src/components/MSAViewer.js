@@ -13,6 +13,7 @@ const SequencePropType = PropTypes.shape({
 const ViewpointType = PropTypes.shape({
   width: PropTypes.number,
   height: PropTypes.number,
+  tileSizes: PropTypes.arrayOf(PropTypes.number), // TODO: check element size or use an object
 });
 
 class MSAViewer extends Component {
@@ -21,7 +22,7 @@ class MSAViewer extends Component {
     color: PropTypes.string,
     scheme: PropTypes.string,
     sequences: PropTypes.arrayOf(SequencePropType).isRequired,
-    sequences: ViewpointType,
+    viewpoint: ViewpointType,
   }
 
   static defaultProps = {
@@ -45,10 +46,14 @@ class MSAViewer extends Component {
 
     this.viewpoint = {
       pos: [0, 0],
-      tileSizes: [20, 20],
-      width: this.props.viewpoint.width,
-      height: this.props.viewpoint.height,
     };
+    this.updateScreen();
+  }
+
+  updateScreen() {
+    // TODO: maybe it's better to just use the props
+    this.viewpoint.width = Math.max(50, this.props.viewpoint.width);
+    this.viewpoint.height = Math.max(50, this.props.viewpoint.height);
   }
 
   componentDidMount() {
@@ -67,12 +72,13 @@ class MSAViewer extends Component {
   draw = () => {
     // TODO: only update this if required
     this.scheme = schemes.getScheme(this.props.scheme);
+    this.updateScreen();
     this.ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
     this.drawSequences();
   }
 
   drawSequences() {
-    const [xSize, ySize] = this.viewpoint.tileSizes;
+    const [xSize, ySize] = this.props.viewpoint.tileSizes;
     const [xViewPos, yViewPos] = this.viewpoint.pos;
     const xInitPos = -(xViewPos % xSize);
     let xPos = xInitPos, yPos = -(yViewPos % ySize);
@@ -117,9 +123,9 @@ class MSAViewer extends Component {
     this.viewpoint.pos[1] += oldPos[1] - newPos[1];
     // TODO: need maxium of sequence lengths here
     const maximum = max(this.props.sequences.map(e => e.sequence.length));
-    this.viewpoint.pos[0] = clamp(this.viewpoint.pos[0], 0, maximum * this.viewpoint.tileSizes[0] - this.viewpoint.width);
+    this.viewpoint.pos[0] = clamp(this.viewpoint.pos[0], 0, maximum * this.props.viewpoint.tileSizes[0] - this.viewpoint.width);
     this.viewpoint.pos[1] = clamp(this.viewpoint.pos[1], 0,
-      this.props.sequences.length * this.viewpoint.tileSizes[1] - this.viewpoint.height);
+      this.props.sequences.length * this.props.viewpoint.tileSizes[1] - this.viewpoint.height);
     console.log(this.viewpoint.pos);
   }
 
@@ -185,11 +191,11 @@ class MSAViewer extends Component {
     this.draw();
   }
 
-  shouldComponentUpdate(newProps) {
-    // TODO: check recursively
-    //return this.props.target !== newProps.target;
-    return true;
-  }
+  //shouldComponentUpdate(newProps) {
+    //// TODO: check recursively
+    ////return this.props.target !== newProps.target;
+    //return true;
+  //}
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
@@ -208,8 +214,8 @@ class MSAViewer extends Component {
     return (
       <canvas
         ref={this.canvas}
-        width={this.viewpoint.width}
-        height={this.viewpoint.height}
+        width={this.props.viewpoint.width}
+        height={this.props.viewpoint.height}
       >
       </canvas>
     );
