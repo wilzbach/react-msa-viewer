@@ -24,12 +24,63 @@ class DrawingBase {
     this.clear();
   }
   endDrawingFrame() {}
+  save(){}
+  restore(){}
+}
+
+class CanvasCharCache {
+  constructor(g) {
+    this.cache = {};
+    this.cacheHeight = 0;
+    this.cacheWidth = 0;
+  }
+
+  // returns a cached canvas
+  getFontTile(letter, width, height, font) {
+    // validate cache
+    if (width !== this.cacheWidth || height !== this.cacheHeight || font !== this.font) {
+      this.updateDimensions(width, height);
+      this.font = font;
+    }
+
+    if (this.cache[letter] === undefined) {
+      this.createTile(letter, width, height);
+    }
+
+    return this.cache[letter];
+  }
+
+  // creates a canvas with a single letter
+  // (for the fast font cache)
+  createTile(letter, width, height, font) {
+    const canvas = this.cache[letter] = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    this.ctx = canvas.getContext('2d');
+    this.ctx.font = this.font + "px mono";
+
+    this.ctx.textBaseline = 'middle';
+    this.ctx.textAlign = "center";
+
+    return this.ctx.fillText(letter, width / 2, height / 2, width, font);
+  }
+  updateDimensions(width, height) {
+    this.invalidate();
+    this.cacheWidth = width;
+    this.cacheHeight = height;
+  }
+
+  invalidate() {
+    // TODO: destroy the old canvas elements
+    this.cache = {};
+  }
 }
 
 class Canvas extends DrawingBase {
   constructor(el) {
     super(el);
     this.ctx = el.getContext('2d');
+    this.cache = new CanvasCharCache();
   }
 
   clear() {
@@ -42,8 +93,13 @@ class Canvas extends DrawingBase {
     this.ctx.fillRect(x, y, width, height);
   }
 
+  // TODO: rename as its effectively only one letter
   fillText(text, x, y) {
-    this.ctx.fillText(text, x, y);
+    //this.ctx.fillText(text, x, y);
+    return this.ctx.drawImage(
+      this.cache.getFontTile(text, 20, 20, this.ctx.font),
+      x, y, 20, 20,
+    );
   }
 
   // props
@@ -57,6 +113,14 @@ class Canvas extends DrawingBase {
 
   globalAlpha(globalAlpha) {
     this.ctx.globalAlpha = globalAlpha;
+  }
+
+  save() {
+    this.ctx.save();
+  }
+
+  restore() {
+    this.ctx.restore();
   }
 }
 

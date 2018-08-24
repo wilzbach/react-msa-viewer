@@ -42,9 +42,10 @@ class MSAViewer extends Component {
     super(props);
     const msecsPerFps = 1000 / this.fps;
     this.canvas = React.createRef();
-    this.handleMouseMove = throttle(this.handleMouseMove, msecsPerFps);
-    this.handleTouchMove = throttle(this.handleTouchMove, msecsPerFps);
+    //this.handleMouseMove = throttle(this.handleMouseMove, msecsPerFps);
+    //this.handleTouchMove = throttle(this.handleTouchMove, msecsPerFps);
     this.draw = throttle(this.draw, msecsPerFps);
+    // TODO: maybe requestAnimationFrame
 
     this.viewpoint = {
       pos: [0, 0],
@@ -77,10 +78,18 @@ class MSAViewer extends Component {
 
   draw = () => {
     // TODO: only update this if required
+    this.ctx.startDrawingFrame();
+    this.ctx.save();
     this.scheme = schemes.getScheme(this.props.scheme);
     this.updateScreen();
-    this.ctx.clear();
     this.drawSequences();
+    this.ctx.restore();
+    this.ctx.endDrawingFrame();
+  }
+
+  dragLoop = () => {
+    this.draw();
+    this.dragFrame = window.requestAnimationFrame(this.dragLoop)
   }
 
   drawSequences() {
@@ -102,7 +111,7 @@ class MSAViewer extends Component {
         this.ctx.globalAlpha(1.0);
         // TODO: cache the font tile
         // TODO: center the font tile
-        this.ctx.fillText(el, xPos + 2, yPos + 17);
+        this.ctx.fillText(el, xPos, yPos);
         xPos += xSize;
         if (xPos > this.viewpoint.width)
             break;
@@ -122,6 +131,7 @@ class MSAViewer extends Component {
     this.canvas.current.addEventListener('mousemove', this.handleMouseMove);
     this.mouseMovePosition = Mouse.abs(e);
     console.log("mousedown", e);
+    this.startDragPhase();
   }
 
   updateViewpoint(oldPos, newPos) {
@@ -145,7 +155,7 @@ class MSAViewer extends Component {
     }
     this.updateViewpoint(this.mouseMovePosition, pos);
     this.mouseMovePosition = pos;
-    this.draw();
+    //this.draw();
   }
 
   handleMouseUp = () => {
@@ -160,6 +170,7 @@ class MSAViewer extends Component {
   handleTouchStart = (e) => {
     this.canvas.current.addEventListener('touchmove', this.handleTouchMove);
     this.touchMovePosition = Mouse.abs(e);
+    this.startDragPhase();
     // TODO: same behavior as in mouse move
   }
 
@@ -176,11 +187,19 @@ class MSAViewer extends Component {
     this.stopDragPhase();
   }
 
+  startDragPhase() {
+    if(!this.dragFrame) {
+      this.dragFrame = window.requestAnimationFrame(this.dragLoop);
+    }
+  }
+
   stopDragPhase() {
     this.canvas.current.removeEventListener('mousemove', this.handleMouseMove);
     this.mouseMovePosition = [-1, -1];
     this.canvas.current.removeEventListener('touchmove', this.handleTouchMove);
     this.touchMovePosition = [-1, -1];
+    window.cancelAnimationFrame(this.dragFrame);
+    this.dragFrame = null;
   }
 
   // TODO: handle wheel events
