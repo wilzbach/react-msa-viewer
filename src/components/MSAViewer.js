@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {throttle, floor, clamp, max} from 'lodash';
 import Mouse from '../utils/mouse';
+import {Canvas, WebGL} from '../utils/canvas';
 
 const schemes = new (require('msa-colorschemes'))();
 
@@ -35,7 +36,7 @@ class MSAViewer extends Component {
     }
   }
 
-  static fps = 60;
+  static fps = 120;
 
   constructor(props) {
     super(props);
@@ -58,7 +59,11 @@ class MSAViewer extends Component {
   }
 
   componentDidMount() {
-    this.ctx = this.canvas.current.getContext('2d');
+    if (WebGL.isSupported(this.canvas.current)) {
+      this.ctx = new WebGL(this.canvas.current);
+    } else {
+      this.ctx = new Canvas(this.canvas.current);
+    }
     this.draw();
     window.addEventListener('resize', this.handleResize)
     this.canvas.current.addEventListener('mousedown', this.handleMouseDown);
@@ -74,7 +79,7 @@ class MSAViewer extends Component {
     // TODO: only update this if required
     this.scheme = schemes.getScheme(this.props.scheme);
     this.updateScreen();
-    this.ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height);
+    this.ctx.clear();
     this.drawSequences();
   }
 
@@ -89,12 +94,12 @@ class MSAViewer extends Component {
       let j = clamp(floor(xViewPos / xSize), 0, sequence.length - 1);
       for (; j < sequence.length; j++) {
         const el = sequence[j];
-        this.ctx.font = "20px Arial";
-        this.ctx.fillStyle = this.scheme.getColor(el);
-        this.ctx.globalAlpha = 0.7;
+        this.ctx.font("20px Arial");
+        this.ctx.fillStyle(this.scheme.getColor(el));
+        this.ctx.globalAlpha(0.7);
         this.ctx.fillRect(xPos, yPos, xSize, ySize);
-        this.ctx.fillStyle = "#000000";
-        this.ctx.globalAlpha = 1.0;
+        this.ctx.fillStyle("#000000");
+        this.ctx.globalAlpha(1.0);
         // TODO: cache the font tile
         // TODO: center the font tile
         this.ctx.fillText(el, xPos + 2, yPos + 17);
@@ -218,6 +223,7 @@ class MSAViewer extends Component {
         width={this.props.viewpoint.width}
         height={this.props.viewpoint.height}
       >
+      Your browser does not seem to support HTML5 canvas.
       </canvas>
     );
   }
