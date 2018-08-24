@@ -83,4 +83,21 @@ storiesOf('Basic', module)
     </MSAViewer>
     )
   })
+  .add('WebGL (WIP)', function(){
+    const options = {
+      scheme: "clustal",
+      engine: "webgl",
+      sequences: [],
+    };
+    times(100, () => {
+      options.sequences.push({
+          name: "seq",
+          sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+      });
+    });
+    return (
+    <MSAViewer {...options} >
+    </MSAViewer>
+    )
+  })
 ;

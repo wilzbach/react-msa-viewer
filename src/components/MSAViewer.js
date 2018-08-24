@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {throttle, floor, clamp, max} from 'lodash';
 import Mouse from '../utils/mouse';
-import {Canvas, WebGL} from '../utils/canvas';
+import Canvas from '../drawing/canvas';
+import WebGL from '../drawing/webgl';
 
 const schemes = new (require('msa-colorschemes'))();
 
@@ -24,6 +25,7 @@ class MSAViewer extends Component {
     scheme: PropTypes.string,
     sequences: PropTypes.arrayOf(SequencePropType).isRequired,
     viewpoint: ViewpointType,
+    engine: PropTypes.string,
   }
 
   static defaultProps = {
@@ -33,7 +35,8 @@ class MSAViewer extends Component {
       width: 500,
       height: 100,
       tileSizes: [20, 20],
-    }
+    },
+    engine: "canvas",
   }
 
   static fps = 120;
@@ -60,7 +63,7 @@ class MSAViewer extends Component {
   }
 
   componentDidMount() {
-    if (WebGL.isSupported(this.canvas.current)) {
+    if (this.props.engine === "webgl" && WebGL.isSupported(this.canvas.current)) {
       this.ctx = new WebGL(this.canvas.current);
     } else {
       this.ctx = new Canvas(this.canvas.current);
