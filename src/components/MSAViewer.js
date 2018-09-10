@@ -54,6 +54,9 @@ class MSAViewer extends Component {
       pos: [0, 0],
     };
     this.updateScreen();
+    this.state = {
+      cursorState: "grab",
+    };
   }
 
   updateScreen() {
@@ -132,9 +135,8 @@ class MSAViewer extends Component {
 
   handleMouseDown = (e) => {
     this.canvas.current.addEventListener('mousemove', this.handleMouseMove);
-    this.mouseMovePosition = Mouse.abs(e);
     console.log("mousedown", e);
-    this.startDragPhase();
+    this.startDragPhase(e);
   }
 
   updateViewpoint(oldPos, newPos) {
@@ -172,14 +174,14 @@ class MSAViewer extends Component {
 
   handleTouchStart = (e) => {
     this.canvas.current.addEventListener('touchmove', this.handleTouchMove);
-    this.touchMovePosition = Mouse.abs(e);
-    this.startDragPhase();
-    // TODO: same behavior as in mouse move
+    console.log("touchstart", e);
+    this.startDragPhase(e);
   }
 
   handleTouchMove = (e) => {
     console.log("touchmove", e);
-    // can call mouse move with changedTouches[$-1], but it's reversed moving
+    // TODO: can call mouse move with changedTouches[$-1], but it's reversed moving
+    this.handleMouseMove(e);
   }
 
   handleTouchEnd = () => {
@@ -190,10 +192,14 @@ class MSAViewer extends Component {
     this.stopDragPhase();
   }
 
-  startDragPhase() {
+  startDragPhase(e) {
+    this.mouseMovePosition = Mouse.abs(e);
     if(!this.dragFrame) {
       this.dragFrame = window.requestAnimationFrame(this.dragLoop);
     }
+    this.setState({
+      cursorState: "grabbing"
+    });
   }
 
   stopDragPhase() {
@@ -203,6 +209,9 @@ class MSAViewer extends Component {
     this.touchMovePosition = [-1, -1];
     window.cancelAnimationFrame(this.dragFrame);
     this.dragFrame = null;
+    this.setState({
+      cursorState: "grab"
+    });
   }
 
   // TODO: handle wheel events
@@ -244,6 +253,7 @@ class MSAViewer extends Component {
         ref={this.canvas}
         width={this.props.viewpoint.width}
         height={this.props.viewpoint.height}
+        style={{cursor: this.state.cursorState}}
       >
       Your browser does not seem to support HTML5 canvas.
       </canvas>
