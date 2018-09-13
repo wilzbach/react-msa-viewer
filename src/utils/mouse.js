@@ -1,31 +1,35 @@
 class Mouse {
   static rel = function(e) {
-    let mouseX, mouseY, rect, target;
-    mouseX = e.offsetX;
-    mouseY = e.offsetY;
+    if (e.changedTouches !== undefined)
+      //return Mouse.rel(e.changedTouches[e.targetTouches.length - 1]);
+      return Mouse.rel(e.changedTouches[0]);
+
+    let mouseX = e.offsetX;
+    let mouseY = e.offsetY;
     if (mouseX === undefined) {
-      rect = target.getBoundingClientRect();
-      target = e.target || e.srcElement;
-      if (mouseX === undefined) {
-        mouseX = e.clientX - rect.left;
-        mouseY = e.clientY - rect.top;
-      }
+      const target = e.target || e.srcElement;
+      const rect = target.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
       if (mouseX === undefined) {
         mouseX = e.pageX - target.offsetLeft;
         mouseY = e.pageY - target.offsetTop;
-      }
-      if (mouseX === undefined) {
-        console.log(e, "No mouse event defined.");
-        return;
+        if (mouseX === undefined) {
+          console.log(e, "No mouse event defined.");
+          return;
+        }
       }
     }
     return [mouseX, mouseY];
   }
 
   static abs = function(e) {
-    let mouseX, mouseY;
-    mouseX = e.pageX;
-    mouseY = e.pageY;
+    if (e.changedTouches !== undefined)
+      //return Mouse.abs(e.changedTouches[e.targetTouches.length - 1]);
+      return Mouse.abs(e.changedTouches[0]);
+
+    let mouseX = e.pageX;
+    let mouseY = e.pageY;
     if (mouseX === undefined) {
       mouseX = e.layerX;
       mouseY = e.layerY;
@@ -42,8 +46,7 @@ class Mouse {
   }
 
   static wheelDelta = function(e) {
-    let delta;
-    delta = [e.deltaX, e.deltaY];
+    let delta = [e.deltaX, e.deltaY];
     if (delta[0] === undefined) {
       // in case there is a more detailed scroll sensor - use it
       if (e.mozMovementX) {

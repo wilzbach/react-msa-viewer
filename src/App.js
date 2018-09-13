@@ -4,7 +4,6 @@ import MSAViewer from './components/MSAViewer';
 class App extends Component {
   render() {
     const options = {
-      scheme: "clustal",
       sequences: [
         {
           name: "seq.1",
@@ -23,6 +22,9 @@ class App extends Component {
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
       ],
+      ui: {
+        scheme: "clustal",
+      }
     };
     return (
       <div>
@@ -31,5 +33,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;
