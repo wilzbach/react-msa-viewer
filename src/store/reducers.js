@@ -2,6 +2,8 @@ import * as types from './actionTypes'
 
 import { combineReducers } from 'redux'
 
+import calculateSequencesState from './calculateSequencesState';
+
 const defaultViewpoint = {
   width: -1,
   height: -1,
@@ -9,15 +11,11 @@ const defaultViewpoint = {
   fontSize: "",
 }
 
-// reducers
+// TODO: maybe combine with UI?
 const viewpoint = (state = defaultViewpoint, action) => {
   switch(action.type){
-    //case types.VIEWPOINT_POSITION_UPDATE:
-      //return {
-        //...state,
-        //xPos: action.view.xPos,
-        //yPos: action.view.yPos,
-      //};
+    case types.VIEWPOINT_UPDATE:
+      return action.viewpoint;
     default:
       return state;
   }
@@ -25,8 +23,8 @@ const viewpoint = (state = defaultViewpoint, action) => {
 
 const position = (state = {xPos: 0, yPos: 0}, action) => {
   switch(action.type){
-    case types.VIEWPOINT_POSITION_UPDATE:
-      return {...action.position};
+    case types.POSITION_UPDATE:
+      return action.position;
     default:
       return state;
   }
@@ -40,17 +38,18 @@ const defaultUI = {
 
 const ui = (state = defaultUI, action) => {
   switch(action.type){
-    //case types.VIEWPOINT_POSITION_UPDATE:
-      //return state;
+    case types.UI_UPDATE:
+      return action.ui;
     default:
       return state;
   }
 }
 
 const sequences = (state = {raw: []}, action) => {
+  console.log("SEQUENCE REDUCER", action.type);
   switch(action.type){
-    //case types.VIEWPOINT_POSITION_UPDATE:
-      //break;
+    case types.SEQUENCES_UPDATE:
+      return calculateSequencesState(action.sequences);
     default:
       return state;
   }

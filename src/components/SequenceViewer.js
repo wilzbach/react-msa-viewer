@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
   //MSAPropTypes
 //} from '../PropTypes';
 
-import { updateViewpoint } from '../store//actions'
+import { updatePosition } from '../store/actions'
 import propsToRedux from '../store/propsToRedux';
 
 import { throttle, floor, clamp } from 'lodash';
@@ -120,7 +120,7 @@ class SequenceViewerComponent extends Component {
     this.startDragPhase(e);
   }
 
-  updateViewpoint(oldPos, newPos) {
+  updatePosition(oldPos, newPos) {
     // TODO: move this into a redux action
     const pos = this.props.position;
     const viewpoint = this.props.viewpoint;
@@ -131,7 +131,7 @@ class SequenceViewerComponent extends Component {
     pos.xPos = clamp(pos.xPos, 0, maximum * viewpoint.tileSizes[0] - viewpoint.width);
     pos.yPos = clamp(pos.yPos, 0,
       this.props.sequences.length * viewpoint.tileSizes[1] - viewpoint.height);
-    this.props.updateViewpoint(pos);
+    this.props.updatePosition(pos);
   }
 
   handleMouseMove = (e) => {
@@ -142,7 +142,7 @@ class SequenceViewerComponent extends Component {
       this.stopDragPhase();
       return;
     }
-    this.updateViewpoint(this.mouseMovePosition, pos);
+    this.updatePosition(this.mouseMovePosition, pos);
     this.mouseMovePosition = pos;
   }
 
@@ -255,7 +255,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateViewpoint: (view) => dispatch(updateViewpoint(view)),
+    updatePosition: (view) => dispatch(updatePosition(view)),
   }
 }
 

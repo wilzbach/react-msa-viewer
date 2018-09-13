@@ -7,7 +7,9 @@ import { select, number } from '@storybook/addon-knobs';
 storiesOf('Basic', module)
   .add('Standard rendering', function(){
     const options = {
-      scheme: "clustal",
+      ui: {
+        scheme: "clustal",
+      },
       sequences: [
         {
           name: "seq.1",
@@ -34,7 +36,9 @@ storiesOf('Basic', module)
   })
   .add('Big viewpoint', function(){
     const options = {
-      scheme: "clustal",
+      ui: {
+        scheme: "clustal",
+      },
       sequences: [],
       viewpoint: {
         height: number("height", 500),
@@ -62,7 +66,9 @@ storiesOf('Basic', module)
       "zappo",
     ];
     const options = {
-      scheme: select("Colorscheme", colorschemes, "zappo"),
+      ui: {
+        scheme: select("Colorscheme", colorschemes, "zappo"),
+      },
       sequences: [
         {
           name: "seq.1",
@@ -85,8 +91,10 @@ storiesOf('Basic', module)
   })
   .add('WebGL (WIP)', function(){
     const options = {
-      scheme: "clustal",
-      engine: "webgl",
+      ui: {
+        scheme: "clustal",
+        engine: "webgl",
+      },
       sequences: [],
     };
     times(100, () => {
