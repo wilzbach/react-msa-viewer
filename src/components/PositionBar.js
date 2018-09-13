@@ -36,7 +36,7 @@ class PositionBarComponent extends Component {
     let xPos = -this.props.position.xPos;
     let yPos = 0;
     this.ctx.font(this.props.viewpoint.fontSize);
-    for (let i = 0; i <= this.props.maxLength; i++) {
+    for (let i = 0; i < this.props.maxLength; i++) {
       if (i % 2 === 0) {
         this.ctx.fillText(i, xPos, yPos);
       } else {
