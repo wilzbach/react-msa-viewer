@@ -15,7 +15,6 @@ export const propsToRedux = (WrappedComponent) => {
 
     // TODO: this method will be deprecated with React 17
     componentWillReceiveProps(nextProps) {
-      console.log("nextProps", nextProps);
       // TODO: store might change
       const state = this.store.getState();
       for (const prop in nextProps) {

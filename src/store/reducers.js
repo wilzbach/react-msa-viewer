@@ -46,7 +46,6 @@ const ui = (state = defaultUI, action) => {
 }
 
 const sequences = (state = {raw: []}, action) => {
-  console.log("SEQUENCE REDUCER", action.type);
   switch(action.type){
     case types.SEQUENCES_UPDATE:
       return calculateSequencesState(action.sequences);
