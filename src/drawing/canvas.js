@@ -19,11 +19,11 @@ class Canvas extends DrawingBase {
   }
 
   // TODO: rename as its effectively only one letter
-  fillText(text, x, y) {
+  fillText(text, x, y, width, height) {
     //this.ctx.fillText(text, x, y);
     return this.ctx.drawImage(
-      this.cache.getFontTile(text, 20, 20, this.ctx.font),
-      x, y, 20, 20,
+      this.cache.getFontTile(text, width, height, this.ctx.font),
+      x, y, width, height,
     );
   }
 

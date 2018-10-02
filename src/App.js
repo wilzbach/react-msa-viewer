@@ -21,6 +21,18 @@ class App extends Component {
           name: "seq.4",
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
+        {
+          name: "seq.5",
+          sequence: "MEEPQSD--IEL-PLSEETFSDLWWPLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+        },
+        {
+          name: "seq.6",
+          sequence: "MEEPQEDLSSSL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+        },
+        {
+          name: "seq.7",
+          sequence: "MEEPQ---SISE-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE---LSENVAGWLEDP"
+        },
       ],
       ui: {
         scheme: "clustal",

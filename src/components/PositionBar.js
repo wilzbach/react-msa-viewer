@@ -9,9 +9,8 @@ import Canvas from '../drawing/canvas';
 
 /**
 TODO:
-- update on tile size/width changes
-- update on msaviewer width changes
 - buffer to animation frame
+- make styling flexible
 */
 
 class PositionBarComponent extends Component {
@@ -33,14 +32,18 @@ class PositionBarComponent extends Component {
 
   draw() {
     this.ctx.startDrawingFrame();
-    let xPos = -this.props.position.xPos;
-    let yPos = 0;
-    this.ctx.font(this.props.viewpoint.fontSize);
-    for (let i = 0; i < this.props.maxLength; i++) {
+    this.ctx.font(this.props.viewpoint.markerFont);
+
+    const [tileWidth, tileHeight] = this.props.viewpoint.tileSizes;
+    const yPos = 0;
+    const startTile = Math.floor(this.props.position.xPos / tileWidth);
+    const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
+    let xPos = -this.props.position.xPos % tileWidth;
+    for (let i = startTile; i < (startTile + tiles); i++) {
       if (i % 2 === 0) {
-        this.ctx.fillText(i, xPos, yPos);
+        this.ctx.fillText(i, xPos, yPos, tileWidth, tileHeight);
       } else {
-        this.ctx.fillText(".", xPos, yPos);
+        this.ctx.fillText(".", xPos, yPos, tileWidth, tileHeight);
       }
       xPos += this.props.viewpoint.tileSizes[0];
     }
@@ -48,15 +51,17 @@ class PositionBarComponent extends Component {
   }
 
   render() {
+    const style = {
+      display: "block",
+    };
+		const height = this.props.viewpoint.markerHeight * 1 + 2;
     return (
-      <div>
-        <canvas
-          ref={this.canvas}
-          width={this.props.viewpoint.width}
-          height={this.props.viewpoint.tileSizes[1]}
-        >
-        </canvas>
-      </div>
+      <canvas
+        ref={this.canvas}
+        width={this.props.viewpoint.width}
+        height={height}
+				style={style}
+      />
     );
   }
 }
@@ -69,9 +74,6 @@ const mapStateToProps = state => {
   }
 }
 
-const WrappedPositionBar = connect(
+export default propsToRedux(connect(
   mapStateToProps,
-)(PositionBarComponent);
-
-const PositionBar = propsToRedux(WrappedPositionBar);
-export default PositionBar;
+)(PositionBarComponent));

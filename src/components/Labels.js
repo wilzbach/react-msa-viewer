@@ -1,0 +1,72 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
+import { throttle } from 'lodash';
+
+import propsToRedux from '../store/propsToRedux';
+
+import Canvas from '../drawing/canvas';
+
+class LabelsComponent extends Component {
+
+  static defaultProps = {
+    width: 80, // TODO: can we calculate this automatically?
+    style: {display: "block"},
+  }
+
+  constructor(props) {
+    super(props);
+    this.canvas = React.createRef();
+    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+  }
+
+  componentDidMount() {
+    this.ctx = new Canvas(this.canvas.current);
+    this.draw();
+  }
+
+  componentDidUpdate() {
+    this.draw();
+  }
+
+  draw() {
+    const [,tileHeight] = this.props.viewpoint.tileSizes;
+    this.ctx.startDrawingFrame();
+    let xPos = 0;
+    let yPos = -this.props.position.yPos + 3;
+    this.ctx.font(this.props.viewpoint.labelSize);
+    for (let i = 0; i < this.props.maxLength; i++) {
+      this.ctx.fillText("Sequence " + i, xPos, yPos, this.props.width, tileHeight);
+      yPos += tileHeight;
+    }
+    this.ctx.endDrawingFrame();
+  }
+
+  render() {
+    return (
+      <div style={this.props.style}>
+        <canvas
+          ref={this.canvas}
+          width={this.props.width}
+          height={this.props.viewpoint.height}
+        >
+        </canvas>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    position: state.position,
+    viewpoint: state.viewpoint,
+    maxLength: state.sequences.maxLength,
+  }
+}
+
+const WrappedLabels = connect(
+  mapStateToProps,
+)(LabelsComponent);
+
+const Labels = propsToRedux(WrappedLabels);
+export default Labels;

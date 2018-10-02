@@ -45,8 +45,10 @@ export const propsToRedux = (WrappedComponent) => {
     }
 
     render() {
+      // TODO: filter out potential redux props
+      const {store, ...props} = this.props;
       return (
-        <WrappedComponent store={this.store} />
+        <WrappedComponent store={this.store} {...props} />
       );
     }
   }

@@ -8,7 +8,9 @@ const defaultViewpoint = {
   width: -1,
   height: -1,
   tileSizes: [20, 20],
-  fontSize: "",
+  tileFont: "",
+  labelFont: "",
+  positionFont: "",
 }
 
 // TODO: maybe combine with UI?
