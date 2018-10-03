@@ -2,7 +2,7 @@
   "name": "msa",
   "version": "0.1.0",
   "private": true,
-  "main": "src/library.js",
+  "main": "src/components/MSAViewer.js",
   "dependencies": {
     "lodash": "^4.17.11",
     "msa-colorschemes": "^1.0.10",
