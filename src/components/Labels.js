@@ -43,7 +43,7 @@ class LabelsComponent extends Component {
     let xPos = 0;
     let yPos = -this.props.position.yPos + 3;
     this.ctx.font(this.props.viewpoint.labelSize);
-    for (let i = 0; i < this.props.maxLength; i++) {
+    for (let i = 0; i < this.props.nrSequences; i++) {
       this.ctx.fillText("Sequence " + i, xPos, yPos, this.props.width, tileHeight);
       yPos += tileHeight;
     }
@@ -68,7 +68,7 @@ const mapStateToProps = state => {
   return {
     position: state.position,
     viewpoint: state.viewpoint,
-    maxLength: state.sequences.maxLength,
+    nrSequences: state.sequences.length,
   }
 }
 
