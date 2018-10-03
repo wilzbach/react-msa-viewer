@@ -116,6 +116,45 @@ storiesOf('Layouting', module)
       </div>
     )
   })
+  .add('Full', function(){
+    const options = {
+      sequences,
+    };
+    const store = createMSAStore(options);
+    return (
+      <div>
+        <div style={{display: "flex"}} >
+          <Labels
+            store={store}
+          />
+          <div>
+            <SequenceViewer
+              store={store}
+            />
+            <PositionBar
+              store={store}
+            />
+            <br />
+            <OverviewBar
+              store={store}
+            />
+            <br />
+            <PositionBar
+              store={store}
+            />
+            <OverviewBar
+              store={store}
+              method="information-content"
+            />
+          </div>
+        </div>
+        <br />
+        <SequenceOverview
+          store={store}
+        />
+      </div>
+    )
+  })
   .add('Compact', function(){
     const options = {
       sequences,
