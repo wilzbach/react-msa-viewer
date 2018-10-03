@@ -68,7 +68,7 @@ const mapStateToProps = state => {
   return {
     position: state.position,
     viewpoint: state.viewpoint,
-    nrSequences: state.sequences.length,
+    nrSequences: state.sequences.raw.length,
   }
 }
 
