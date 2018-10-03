@@ -1,4 +1,4 @@
-<MSAViewer />
+`<MSAViewer />`
 =============
 
 [![Travis](https://img.shields.io/travis/plotly/react-msa-viewer/master.svg)](https://travis-ci.org/plotly/react-msa-viewer)
@@ -22,7 +22,7 @@ Getting started
 ---------------
 
 ```js
-import MSAViewer from 'react-msa-viewer';
+import MSAViewer from '@plotly/react-msa-viewer';
 
 function MSA() {
   const options = {
@@ -55,16 +55,16 @@ function MSA() {
 
 ### Installation
 
-For [npm](https://www.npmjs.com/) users, run:
+For [npm](https://www.npmjs.com) users, run:
 
 ```
-npm i --save react-msa-viewer
+npm i --save @plotly/react-msa-viewer
 ```
 
-For [yarn](https://yarnpkg.com/en/) users, run:
+For [yarn](https://yarnpkg.com/en) users, run:
 
 ```
-yarn add react-msa-viewer
+yarn add @plotly/react-msa-viewer
 ```
 
 Props

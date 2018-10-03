@@ -1,7 +1,8 @@
 {
-  "name": "msa",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@plotly/react-msa-viewer",
+  "description": "A React component to create Multiple Sequence Alignments",
+  "version": "0.0.1",
+  "private": false,
   "main": "src/components/MSAViewer.js",
   "dependencies": {
     "lodash": "^4.17.11",
