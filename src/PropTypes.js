@@ -54,7 +54,7 @@ export const msaDefaultProps = {
     },
     msecsPerFps: 1000  / 60,
     overviewBar: {
-      height: 500,
+      height: 50,
       fillColor: "#999999",
     },
   },

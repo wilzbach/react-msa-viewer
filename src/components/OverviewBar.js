@@ -15,12 +15,19 @@ import propsToRedux from '../store/propsToRedux';
 
 import Canvas from '../drawing/canvas';
 
+const MSAStats = require('stat.seqs');
+
 class OverviewBarComponent extends Component {
+
+  static defaultProps = {
+    method: "conservation",
+  }
 
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
     this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.calculateStats();
   }
 
   componentDidMount() {
@@ -29,6 +36,7 @@ class OverviewBarComponent extends Component {
   }
 
   componentDidUpdate() {
+    this.calculateStats();
     this.draw();
   }
 
@@ -42,13 +50,31 @@ class OverviewBarComponent extends Component {
     const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
     let xPos = -this.props.position.xPos % tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
-			let height = this.props.styling.height * this.props.columnHeights[i];
+			let height = this.props.styling.height * this.columnHeights[i];
 			const remainingHeight = this.props.styling.height - height;
       this.ctx.fillStyle(this.props.styling.fillColor);
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
       xPos += this.props.viewpoint.tileSizes[0];
     }
     this.ctx.endDrawingFrame();
+  }
+
+  // TODO: do smarter caching here
+  calculateStats() {
+    const stats = MSAStats(this.props.sequences.map(e => e.sequence));
+    this.columnHeights = [];
+    switch (this.props.method) {
+      case "conservation":
+        this.columnHeights = stats.scale(stats.conservation());
+        break;
+      case "ic":
+      case "information":
+      case "information-content":
+        this.columnHeights = stats.scale(stats.ic());
+        break;
+      default:
+        console.error(this.props.method + "is an invalid aggregation method for <OverviewBar />");
+    }
   }
 
   render() {
@@ -64,9 +90,9 @@ class OverviewBarComponent extends Component {
 
 const mapStateToProps = state => {
   return {
+    sequences: state.sequences.raw,
     position: state.position,
     viewpoint: state.viewpoint,
-    columnHeights: state.sequences.columns,
     styling: state.viewpoint.overviewBar,
   }
 }
