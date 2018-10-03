@@ -159,6 +159,18 @@ entire alignment, e.g. `{xPos: 20, yPos: 5}`.
 
 Maximum number of frames per second, e.g. `10000 / 60`.
 
+#### `overviewBar`
+
+Styling for the `OverviewBar` component.
+
+##### `fillColor`
+
+Fill color of the plot's bars, e.g. `#999999`.
+
+##### `height`
+
+Maximal height of the overview bar (in pixels), e.g. `50`.
+
 Development
 -----------
 

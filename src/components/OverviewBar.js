@@ -17,11 +17,6 @@ import Canvas from '../drawing/canvas';
 
 class OverviewBarComponent extends Component {
 
-  static defaultProps = {
-    height: 50,
-    fillColor: "#999999",
-  }
-
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
@@ -47,9 +42,9 @@ class OverviewBarComponent extends Component {
     const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
     let xPos = -this.props.position.xPos % tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
-			let height = this.props.height * this.props.columnHeights[i];
-			const remainingHeight = this.props.height - height;
-      this.ctx.fillStyle(this.props.fillColor);
+			let height = this.props.styling.height * this.props.columnHeights[i];
+			const remainingHeight = this.props.styling.height - height;
+      this.ctx.fillStyle(this.props.styling.fillColor);
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
       xPos += this.props.viewpoint.tileSizes[0];
     }
@@ -61,7 +56,7 @@ class OverviewBarComponent extends Component {
       <canvas
         ref={this.canvas}
         width={this.props.viewpoint.width}
-        height={this.props.height}
+        height={this.props.styling.height}
       />
     );
   }
@@ -72,6 +67,7 @@ const mapStateToProps = state => {
     position: state.position,
     viewpoint: state.viewpoint,
     columnHeights: state.sequences.columns,
+    styling: state.viewpoint.overviewBar,
   }
 }
 

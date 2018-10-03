@@ -31,8 +31,9 @@ class MSAViewerComponent extends Component {
   //}
 
   render() {
-    const labelsPadding = this.props.store.getState().viewpoint.tileSizes[1];
-    const overviewBarHeight = 50;
+    const currentState = this.props.store.getState();
+    const labelsPadding = currentState.viewpoint.tileSizes[1];
+    const overviewBarHeight = currentState.viewpoint.overviewBar.height;;
     const labelsStyle = {
       paddingTop: labelsPadding + overviewBarHeight,
     }
