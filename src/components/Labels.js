@@ -44,7 +44,13 @@ class LabelsComponent extends Component {
     let yPos = -this.props.position.yPos + 3;
     this.ctx.font(this.props.viewpoint.labelSize);
     for (let i = 0; i < this.props.nrSequences; i++) {
-      this.ctx.fillText("Sequence " + i, xPos, yPos, this.props.width, tileHeight);
+      let label;
+      if (this.props.labels[i]) {
+        label = this.props.labels[i];
+      } else {
+        label = "Sequence " + i;
+      }
+      this.ctx.fillText(label, xPos, yPos, this.props.width, tileHeight);
       yPos += tileHeight;
     }
     this.ctx.endDrawingFrame();
@@ -69,6 +75,7 @@ const mapStateToProps = state => {
     position: state.position,
     viewpoint: state.viewpoint,
     nrSequences: state.sequences.raw.length,
+    labels: state.sequences.raw.map(s => s.name),
   }
 }
 

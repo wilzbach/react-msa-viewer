@@ -14,31 +14,31 @@ class App extends Component {
     const options = {
       sequences: [
         {
-          name: "seq.1",
+          name: "sequence 1",
           sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
         },
         {
-          name: "seq.2",
+          name: "sequence 2",
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
         {
-          name: "seq.3",
+          name: "sequence 3",
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
         {
-          name: "seq.4",
+          name: "sequence 4",
           sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
         {
-          name: "seq.5",
+          name: "sequence 5",
           sequence: "MEEPQSD--IEL-PLSEETFSDLWWPLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
         {
-          name: "seq.6",
+          name: "sequence 6",
           sequence: "MEEPQEDLSSSL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
         },
         {
-          name: "seq.7",
+          name: "sequence 7",
           sequence: "MEEPQ---SISE-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE---LSENVAGWLEDP"
         },
       ],
