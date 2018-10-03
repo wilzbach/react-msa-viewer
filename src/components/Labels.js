@@ -72,9 +72,6 @@ const mapStateToProps = state => {
   }
 }
 
-const WrappedLabels = connect(
+export default propsToRedux(connect(
   mapStateToProps,
-)(LabelsComponent);
-
-const Labels = propsToRedux(WrappedLabels);
-export default Labels;
+)(LabelsComponent));

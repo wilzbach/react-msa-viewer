@@ -15,6 +15,8 @@ import Mouse from '../utils/mouse';
 import Canvas from '../drawing/canvas';
 import WebGL from '../drawing/webgl';
 
+import ModBar from './ModBar';
+
 /**
 Provides dragging support in a canvas for sub-classes.
 Sub-classes are expected to implement:
@@ -46,12 +48,20 @@ class DraggingComponent extends Component {
     },
     ui: {
       engine: "canvas",
-    }
+    },
   }
+
+  state = {
+    mouse: {
+      isMouseWithin: false,
+      cursorState: "grab",
+    }
+  };
 
   constructor(props) {
     super(props);
     this.canvas = React.createRef();
+    this.container = React.createRef();
 
     //this.onMouseMove = throttle(this.onMouseMove, msecsPerFps);
     //this.onTouchMove = throttle(this.onTouchMove, msecsPerFps);
@@ -60,9 +70,6 @@ class DraggingComponent extends Component {
     this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
 
     this.onViewpointChange();
-    this.state = {
-      cursorState: "grab",
-    };
     this.mouseMovePosition = undefined;
     this.touchMovePosition = undefined;
   }
@@ -96,14 +103,16 @@ class DraggingComponent extends Component {
       this.ctx = new Canvas(this.canvas.current);
     }
     this.draw();
-    window.addEventListener('resize', this.onResize)
+    this.container.current.addEventListener('mouseenter', this.onMouseEnter);
+    this.container.current.addEventListener('mouseleave', this.onMouseLeave);
     this.canvas.current.addEventListener('mousedown', this.onMouseDown);
-    this.canvas.current.addEventListener('mouseout', this.onMouseOut);
     this.canvas.current.addEventListener('mouseup', this.onMouseUp);
     this.canvas.current.addEventListener('touchstart', this.onTouchStart);
     this.canvas.current.addEventListener('touchend', this.onTouchEnd);
     this.canvas.current.addEventListener('touchcancel', this.onTouchCancel);
     this.canvas.current.addEventListener('click', this.onMove);
+    // TODO: should we react do window resizes dynamically?
+    //window.addEventListener('resize', this.onResize)
   }
 
   draw = () => {
@@ -121,11 +130,11 @@ class DraggingComponent extends Component {
     this.dragFrame = window.requestAnimationFrame(this.dragLoop)
   }
 
+  /**
+  // TODO: should we react do window resizes dynamically?
   onResize = (e) => {
-    // TODO: move into the wrapper
-    // TODO: only send a resize event once when triggered from multiple connected components
-    console.log("resize", e);
   }
+  */
 
   onMouseDown = (e) => {
     this.canvas.current.addEventListener('mousemove', this.onMouseMove);
@@ -149,8 +158,18 @@ class DraggingComponent extends Component {
     this.stopDragPhase();
   }
 
-  onMouseOut = () => {
+  onMouseEnter = () => {
+    this.setState(prevState => ({
+      mouse: {
+        ...prevState.mouse,
+        isMouseWithin: true,
+      }
+    }));
+  }
+
+  onMouseLeave = () => {
     // TODO: use global window out and not this container's out for better dragging
+    this.stopHoverPhase();
     this.stopDragPhase();
   }
 
@@ -182,9 +201,24 @@ class DraggingComponent extends Component {
     if(!this.dragFrame) {
       this.dragFrame = window.requestAnimationFrame(this.dragLoop);
     }
-    this.setState({
-      cursorState: "grabbing"
-    });
+    this.setState(prevState => ({
+      mouse: {
+        ...prevState.mouse,
+        cursorState: "grabbing",
+      }
+    }));
+  }
+
+  /**
+   * Called whenever the mouse leaves the canvas area.
+   */
+  stopHoverPhase() {
+    this.setState(prevState => ({
+      mouse: {
+        ...prevState.mouse,
+        isMouseWithin: false,
+      },
+    }));
   }
 
   /**
@@ -197,9 +231,12 @@ class DraggingComponent extends Component {
     this.touchMovePosition = undefined;
     window.cancelAnimationFrame(this.dragFrame);
     this.dragFrame = null;
-    this.setState({
-      cursorState: "grab"
-    });
+    this.setState(prevState => ({
+      mouse: {
+        ...prevState.mouse,
+        cursorState: "grab",
+      },
+    }));
   }
 
   isEventWithinComponent(e) {
@@ -214,42 +251,52 @@ class DraggingComponent extends Component {
     this.draw();
   }
 
-  //shouldComponentUpdate(newProps) {
-    //// TODO: check recursively
-    ////return this.props.target !== newProps.target;
-    //return true;
-  //}
-
   /**
    * Unregisters all event listeners and stops the animations.
    */
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onResize);
-    window.removeEventListener('mouseout', this.onMouseOut);
-    window.removeEventListener('mouseup', this.onMouseUp);
-    window.removeEventListener('mousedown', this.onMouseDown);
-    window.removeEventListener('click', this.onClick);
-    window.removeEventListener('touchstart', this.onTouchStart);
-    window.removeEventListener('touchend', this.onTouchEnd);
-    window.removeEventListener('touchcancel', this.onTouchCancel);
+    // TODO: should we react to resize events dynamically?
+    //window.removeEventListener('resize', this.onResize);
+    this.container.current.removeEventListener('mouseenter', this.onMouseEnter);
+    this.container.current.removeEventListener('mouseleave', this.onMouseLeave);
+    this.canvas.current.removeEventListener('mouseup', this.onMouseUp);
+    this.canvas.current.removeEventListener('mousedown', this.onMouseDown);
+    this.canvas.current.removeEventListener('click', this.onClick);
+    this.canvas.current.removeEventListener('touchstart', this.onTouchStart);
+    this.canvas.current.removeEventListener('touchend', this.onTouchEnd);
+    this.canvas.current.removeEventListener('touchcancel', this.onTouchCancel);
     this.stopDragPhase();
   }
 
   render() {
     // TODO: adapt to parent height/width
     const style = {
-      cursor: this.state.cursorState,
+      cursor: this.state.mouse.cursorState,
       display: "block",
+      position: "relative",
     };
+    const modBar = {
+      position: "absolute",
+      right: 0,
+      opacity: 0.8,
+    };
+    const showModBar = this.state.mouse.isMouseWithin;
     return (
-      <canvas
-        ref={this.canvas}
-        width={this.props.viewpoint.width}
-        height={this.props.viewpoint.height}
-        style={style}
+      <div
+          style={style}
+          ref={this.container}
       >
-      Your browser does not seem to support HTML5 canvas.
-      </canvas>
+        { showModBar && (
+            <ModBar style={modBar}> Plotly Modbar</ModBar>
+        )}
+        <canvas
+          ref={this.canvas}
+          width={this.props.viewpoint.width}
+          height={this.props.viewpoint.height}
+        >
+        Your browser does not seem to support HTML5 canvas.
+        </canvas>
+      </div>
     );
   }
 }

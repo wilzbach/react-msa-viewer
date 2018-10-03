@@ -6,6 +6,7 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "msa-colorschemes": "^1.0.10",
+    "plotly-icons": "^1.2.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
