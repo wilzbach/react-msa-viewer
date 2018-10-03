@@ -2,7 +2,7 @@
 =============
 
 [![Travis](https://img.shields.io/travis/plotly/react-msa-viewer/master.svg)](https://travis-ci.org/plotly/react-msa-viewer)
-[![NPM](https://img.shields.io/npm/v/react-msa-viewer.svg)](https://www.npmjs.com/package/react-msa-viewer)
+[![NPM](https://img.shields.io/npm/v/@plotly/react-msa-viewer.svg)](https://www.npmjs.com/package/@plotly/react-msa-viewer)
 
 `react-msa-viewer` is a performant, extendable, highly-customizable, production-ready
 React Component that renders a Multiple Sequence Alignment (MSA).
