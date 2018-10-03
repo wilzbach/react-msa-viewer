@@ -15,6 +15,7 @@ import OverviewBar from './OverviewBar';
 import Labels from './Labels';
 
 import propsToRedux from '../store/propsToRedux';
+import createMSAStore from '../store/createMSAStore';
 
 const labelsAndSequenceDiv = {
   display: "flex",
@@ -35,6 +36,9 @@ class MSAViewerComponent extends Component {
     const labelsStyle = {
       paddingTop: labelsPadding + overviewBarHeight,
     }
+    const separatorPadding = {
+      height: 10,
+    };
     return (
       <div>
         <div style={labelsAndSequenceDiv}>
@@ -53,7 +57,7 @@ class MSAViewerComponent extends Component {
             <SequenceViewer
               store={this.props.store}
             />
-            <br />
+            <div style={separatorPadding} />
             <SequenceOverview
               store={this.props.store}
             />
@@ -68,7 +72,11 @@ const MSAViewer = propsToRedux(MSAViewerComponent);
 
 export default MSAViewer;
 export {
+  createMSAStore,
+  Labels,
   MSAViewer,
-  SequenceViewer,
+  OverviewBar,
   PositionBar,
+  SequenceOverview,
+  SequenceViewer,
 };
