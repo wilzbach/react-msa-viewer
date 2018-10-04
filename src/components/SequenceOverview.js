@@ -11,8 +11,6 @@ import { connect } from 'react-redux'
 
 import { throttle, floor, clamp } from 'lodash';
 
-import propsToRedux from '../store/propsToRedux';
-
 import Canvas from '../drawing/canvas';
 
 const schemes = new (require('msa-colorschemes'))();
@@ -136,6 +134,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default propsToRedux(connect(
+export default connect(
   mapStateToProps,
-)(SequenceOverviewComponent));
+)(SequenceOverviewComponent);

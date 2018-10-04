@@ -52,123 +52,73 @@ const sequences = [
 
 storiesOf('Layouting', module)
   .add('Inverse', function(){
-    const options = {
-      sequences,
-    };
-    const store = createMSAStore(options);
     const overviewBarHeight = 50;
     const labelsStyle = {
-      paddingTop: store.getState().viewpoint.tileSizes[1] + overviewBarHeight,
+      paddingTop: 20 + overviewBarHeight,
     }
     return (
-      <div>
+      <MSAViewer sequences={sequences}>
         <SequenceOverview
-          store={store}
         />
         <div style={{display: "flex"}} >
           <div>
             <OverviewBar
-              store={store}
               height={overviewBarHeight}
             />
-            <PositionBar
-              store={store}
-            />
-            <SequenceViewer
-              store={store}
-            />
+            <PositionBar/>
+            <SequenceViewer/>
           </div>
           <Labels
-            store={store}
             style={labelsStyle}
           />
         </div>
-      </div>
+      </MSAViewer>
     )
   })
   .add('Inverse II', function(){
-    const options = {
-      sequences,
-    };
-    const store = createMSAStore(options);
     return (
-      <div>
-        <SequenceOverview
-          store={store}
-        />
+      <MSAViewer sequences={sequences}>
+        <SequenceOverview/>
         <div style={{display: "flex"}} >
           <div>
-            <SequenceViewer
-              store={store}
-            />
-            <br />
-            <OverviewBar
-              store={store}
-            />
-            <PositionBar
-              store={store}
-            />
+            <SequenceViewer/>
+            <br/>
+            <OverviewBar/>
+            <PositionBar/>
           </div>
-          <Labels
-            store={store}
-          />
+          <Labels/>
         </div>
-      </div>
+      </MSAViewer>
     )
   })
   .add('Full', function(){
-    const options = {
-      sequences,
-    };
-    const store = createMSAStore(options);
     return (
-      <div>
-        <div style={{display: "flex"}} >
-          <Labels
-            store={store}
-          />
+      <MSAViewer sequences={sequences}>
+        <div style={{display: "flex"}}>
+          <Labels/>
           <div>
-            <SequenceViewer
-              store={store}
-            />
-            <PositionBar
-              store={store}
-            />
-            <br />
+            <SequenceViewer/>
+            <PositionBar/>
+            <br/>
+            <OverviewBar/>
+            <br/>
+            <PositionBar/>
             <OverviewBar
-              store={store}
-            />
-            <br />
-            <PositionBar
-              store={store}
-            />
-            <OverviewBar
-              store={store}
               method="information-content"
             />
           </div>
         </div>
-        <br />
-        <SequenceOverview
-          store={store}
-        />
-      </div>
+        <br/>
+        <SequenceOverview/>
+      </MSAViewer>
     )
   })
   .add('Compact', function(){
-    const options = {
-      sequences,
-    };
-    const store = createMSAStore(options);
     return (
-      <span>
-        <PositionBar
-          store={store}
-        />
-        <SequenceViewer
-          store={store}
-        />
-      </span>
+      <MSAViewer sequences={sequences}>
+        <PositionBar/>
+        <SequenceViewer/>
+      </MSAViewer>
     )
   })
   .add('Funky', function(){
@@ -180,43 +130,27 @@ storiesOf('Layouting', module)
       paddingTop: store.getState().viewpoint.tileSizes[1],
     }
     return (
-      <div>
-        <SequenceOverview
-          store={store}
-        />
+      <MSAViewer store={store}>
+        <SequenceOverview/>
         <div style={{display: "flex"}} >
           <Labels
-            store={store}
             style={labelsStyle}
           />
           <div>
-            <PositionBar
-              store={store}
-            />
-            <SequenceViewer
-              store={store}
-            />
-            <PositionBar
-              store={store}
-            />
-            <OverviewBar
-              store={store}
-            />
-            <br />
-            <PositionBar
-              store={store}
-            />
+            <PositionBar/>
+            <SequenceViewer/>
+            <PositionBar/>
+            <OverviewBar/>
+            <br/>
+            <PositionBar/>
           </div>
           <Labels
-            store={store}
             style={labelsStyle}
           />
         </div>
-        <br />
-        <SequenceOverview
-          store={store}
-        />
-      </div>
+        <br/>
+        <SequenceOverview/>
+      </MSAViewer>
     )
   })
  ;

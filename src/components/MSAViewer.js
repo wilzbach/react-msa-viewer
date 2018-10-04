@@ -7,6 +7,7 @@
 */
 
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 
 import PositionBar from './PositionBar';
 import SequenceViewer from './SequenceViewer';
@@ -14,7 +15,10 @@ import SequenceOverview from './SequenceOverview';
 import OverviewBar from './OverviewBar';
 import Labels from './Labels';
 
-import propsToRedux from '../store/propsToRedux';
+import {
+  pick
+} from 'lodash';
+
 import createMSAStore from '../store/createMSAStore';
 
 const labelsAndSequenceDiv = {
@@ -24,53 +28,56 @@ const labelsAndSequenceDiv = {
 // TODO: support changing the store dynamically
 // TODO: when props of children update -> update store
 // TODO: support using the child components in stand-alone mode
-class MSAViewerComponent extends Component {
+class MSAViewer extends Component {
 
-  // TODO for local development
-  //componentDidCatch(error, info) {
-  //}
-
-  render() {
-    const currentState = this.props.store.getState();
-    const labelsPadding = currentState.viewpoint.tileSizes[1];
-    const overviewBarHeight = currentState.viewpoint.overviewBar.height;;
-    const labelsStyle = {
-      paddingTop: labelsPadding + overviewBarHeight,
-    }
-    const separatorPadding = {
-      height: 10,
-    };
-    return (
-      <div>
-        <div style={labelsAndSequenceDiv}>
-          <Labels
-            store={this.props.store}
-            style={labelsStyle}
-          />
-          <div>
-            <OverviewBar
-              store={this.props.store}
-              height={overviewBarHeight}
-            />
-            <PositionBar
-              store={this.props.store}
-            />
-            <SequenceViewer
-              store={this.props.store}
-            />
-            <div style={separatorPadding} />
-            <SequenceOverview
-              store={this.props.store}
-            />
-          </div>
-        </div>
-      </div>
+  componentWillMount() {
+    this.store = this.props.store || createMSAStore(
+      pick(this.props, ['position', 'sequences', 'ui', 'viewpoint'])
     );
+  }
+  render() {
+    console.log(this.props);
+    const {children, ...otherProps} = this.props;
+    if (children) {
+      return (
+        <Provider store={this.store}>
+          <div {...otherProps}>
+            {children}
+          </div>
+        </Provider>
+      );
+    } else {
+      // TODO: add more advanced layouts
+      const currentState = this.store.getState();
+      const labelsPadding = currentState.viewpoint.tileSizes[1];
+      const overviewBarHeight = currentState.viewpoint.overviewBar.height;
+      const labelsStyle = {
+        paddingTop: labelsPadding + overviewBarHeight,
+      }
+      const separatorPadding = {
+        height: 10,
+      };
+      return (
+        <Provider store={this.store}>
+          <div style={labelsAndSequenceDiv}>
+            <Labels
+              style={labelsStyle}
+            />
+            <div>
+              <OverviewBar />
+              <PositionBar />
+              <SequenceViewer />
+              <div style={separatorPadding} />
+              <SequenceOverview />
+            </div>
+          </div>
+        </Provider>
+      );
+    }
   }
 }
 
-const MSAViewer = propsToRedux(MSAViewerComponent);
-
+// TODO: re-include propsToRedux here?
 export default MSAViewer;
 export {
   createMSAStore,

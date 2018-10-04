@@ -11,8 +11,6 @@ import { connect } from 'react-redux'
 
 import { throttle } from 'lodash';
 
-import propsToRedux from '../store/propsToRedux';
-
 import Canvas from '../drawing/canvas';
 
 const MSAStats = require('stat.seqs');
@@ -97,10 +95,7 @@ const mapStateToProps = state => {
   }
 }
 
-const WrappedOverviewBar = connect(
+export default connect(
   mapStateToProps,
   //mapDispatchToProps
 )(OverviewBarComponent);
-
-const OverviewBar = propsToRedux(WrappedOverviewBar);
-export default OverviewBar;

@@ -11,8 +11,6 @@ import { connect } from 'react-redux'
 
 import { throttle } from 'lodash';
 
-import propsToRedux from '../store/propsToRedux';
-
 import Canvas from '../drawing/canvas';
 
 class LabelsComponent extends Component {
@@ -79,6 +77,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default propsToRedux(connect(
+export default connect(
   mapStateToProps,
-)(LabelsComponent));
+)(LabelsComponent);

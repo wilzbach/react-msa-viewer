@@ -9,7 +9,6 @@
 import { connect } from 'react-redux'
 
 import { updatePosition } from '../store/actions'
-import propsToRedux from '../store/propsToRedux';
 
 import { floor, clamp } from 'lodash';
 
@@ -104,7 +103,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default propsToRedux(connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SequenceViewerComponent));
+)(SequenceViewerComponent);
