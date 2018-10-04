@@ -9,7 +9,12 @@
 import React, { Component } from 'react';
 
 // Check https://plotly-icons.now.sh for a listing
-import * as Icons from 'plotly-icons';
+import {
+  AutoscaleIcon,
+  SaveIcon,
+  ZoomPlusIcon,
+  ZoomMinusIcon,
+} from 'plotly-icons';
 
 function PlotlyIcon(){
   // TODO: Not part of plotly-icons
@@ -54,13 +59,16 @@ class ModBar extends Component {
     return (
       <div style={style}>
         <a href="" style={linkStyle}>
-          <Icons.ZoomPlusIcon width={iconWidth} height={iconHeight} />
+          <SaveIcon width={iconWidth} height={iconHeight} />
         </a>
         <a href="" style={linkStyle}>
-          <Icons.ZoomMinusIcon width={iconWidth} height={iconHeight} />
+          <ZoomPlusIcon width={iconWidth} height={iconHeight} />
         </a>
         <a href="" style={linkStyle}>
-          <Icons.AutoscaleIcon width={iconWidth} height={iconHeight} />
+          <ZoomMinusIcon width={iconWidth} height={iconHeight} />
+        </a>
+        <a href="" style={linkStyle}>
+          <AutoscaleIcon width={iconWidth} height={iconHeight} />
         </a>
         <a href="https://plot.ly/"
           target="_blank"
