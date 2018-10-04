@@ -15,9 +15,7 @@
     "plotly-icons": "^1.2.2",
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
-    "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
-    "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "shallowequal": "^1.1.0",
     "stat.seqs": "^0.1.21"
@@ -39,6 +37,8 @@
     "@storybook/addons": "^3.4.10",
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "react-dom": "^16.5.0",
+    "react-scripts": "1.1.4"
   }
 }
