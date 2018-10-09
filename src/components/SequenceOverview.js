@@ -13,6 +13,8 @@ import { throttle, floor, clamp } from 'lodash';
 
 import Canvas from '../drawing/canvas';
 
+import createRef from 'create-react-ref/lib/createRef';
+
 const schemes = new (require('msa-colorschemes'))();
 
 class SequenceOverviewComponent extends Component {
@@ -23,7 +25,7 @@ class SequenceOverviewComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.canvas = React.createRef();
+    this.canvas = createRef();
     this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
   }
 

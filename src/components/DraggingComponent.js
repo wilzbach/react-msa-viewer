@@ -17,6 +17,8 @@ import WebGL from '../drawing/webgl';
 
 import ModBar from './ModBar';
 
+import createRef from 'create-react-ref/lib/createRef';
+
 /**
 Provides dragging support in a canvas for sub-classes.
 Sub-classes are expected to implement:
@@ -60,8 +62,8 @@ class DraggingComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.canvas = React.createRef();
-    this.container = React.createRef();
+    this.canvas = createRef();
+    this.container = createRef();
 
     //this.onMouseMove = throttle(this.onMouseMove, msecsPerFps);
     //this.onTouchMove = throttle(this.onTouchMove, msecsPerFps);

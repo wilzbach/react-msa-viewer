@@ -13,6 +13,8 @@ import { throttle } from 'lodash';
 
 import Canvas from '../drawing/canvas';
 
+import createRef from 'create-react-ref/lib/createRef';
+
 /**
 TODO:
 - buffer to animation frame
@@ -23,7 +25,7 @@ class PositionBarComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.canvas = React.createRef();
+    this.canvas = createRef();
     this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
   }
 

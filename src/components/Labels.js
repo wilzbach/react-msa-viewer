@@ -13,6 +13,8 @@ import { throttle } from 'lodash';
 
 import Canvas from '../drawing/canvas';
 
+import createRef from 'create-react-ref/lib/createRef';
+
 class LabelsComponent extends Component {
 
   static defaultProps = {
@@ -22,7 +24,7 @@ class LabelsComponent extends Component {
 
   constructor(props) {
     super(props);
-    this.canvas = React.createRef();
+    this.canvas = createRef();
     this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
   }
 
