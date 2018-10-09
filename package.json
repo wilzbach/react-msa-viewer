@@ -1,7 +1,16 @@
 {
   "name": "@plotly/react-msa-viewer",
   "description": "A React component to create Multiple Sequence Alignments",
-  "keywords": ["react", "component", "msa", "alignment", "viewer", "multiple", "sequence", "plotly"],
+  "keywords": [
+    "react",
+    "component",
+    "msa",
+    "alignment",
+    "viewer",
+    "multiple",
+    "sequence",
+    "plotly"
+  ],
   "homepage": "https://github.com/plotly/react-msa-viewer",
   "bugs": "https://github.com/plotly/react-msa-viewer/issues",
   "author": "Plotly, Inc",
@@ -14,7 +23,7 @@
     "msa-colorschemes": "^1.0.10",
     "plotly-icons": "^1.2.2",
     "prop-types": "^15.6.2",
-    "react": "^16.5.0",
+    "react": "15.4.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "shallowequal": "^1.1.0",
@@ -38,7 +47,7 @@
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
-    "react-dom": "^16.5.0",
+    "react-dom": "^15.4.2",
     "react-scripts": "1.1.4"
   }
 }
