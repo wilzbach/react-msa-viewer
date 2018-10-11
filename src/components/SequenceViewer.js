@@ -6,7 +6,7 @@
 * LICENSE file in the root directory of this source tree.
 */
 
-import { connect } from 'react-redux'
+import msaConnect from '../store/connect'
 
 import { updatePosition } from '../store/actions'
 
@@ -103,7 +103,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
+export default msaConnect(
   mapStateToProps,
   mapDispatchToProps,
 )(SequenceViewerComponent);

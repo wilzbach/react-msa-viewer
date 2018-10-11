@@ -38,8 +38,14 @@ export const propsToRedux = (WrappedComponent) => {
 
     constructor(props) {
       super(props);
-      const storeProps = pick(props, attributesToStore);
-      this.store = props.store || createMSAStore(storeProps);
+      const storeProps = pick(props, attributesToStore) || {};
+      this.msaStore = props.msaStore;
+      if (storeProps.sequences !== undefined) {
+        this.msaStore = createMSAStore(storeProps);
+        console.log("STORE", this.msaStore.getState());
+      } else {
+        console.warn("Check your MSA properties", storeProps);
+      }
     }
 
     // Notify the internal Redux store about property updates
@@ -49,7 +55,7 @@ export const propsToRedux = (WrappedComponent) => {
         if (!isEqual(oldProps[prop], newProps[prop])) {
           if (prop in reduxActions) {
             const action = actions[reduxActions[prop]](newProps[prop]);
-            this.store.dispatch(action);
+            this.msaStore.dispatch(action);
           } else {
             console.error(prop, " is unknown.");
           }
@@ -58,10 +64,15 @@ export const propsToRedux = (WrappedComponent) => {
     }
 
     render() {
-      const {store, ...props} = omit(this.props, attributesToStore);
-      return (
-        <WrappedComponent store={this.store} {...props} />
-      );
+      const {msaStore, ...props} = omit(this.props, attributesToStore);
+      if (this.msaStore === undefined) {
+        return (<div> error... </div>)
+      } else {
+        console.log("PROPS", this.msaStore.getState());
+        return (
+          <WrappedComponent msaStore={msaStore || this.msaStore} {...props} />
+        );
+      }
     }
   }
 }

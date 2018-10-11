@@ -5,6 +5,7 @@ const config = {
   entry: {
     index: ['./src/components/MSAViewer.js'],
   },
+  devtool: 'eval-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',

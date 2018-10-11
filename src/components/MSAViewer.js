@@ -7,7 +7,7 @@
 */
 
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import MSAProvider from '../store/provider';
 
 import PositionBar from './PositionBar';
 import SequenceViewer from './SequenceViewer';
@@ -33,18 +33,19 @@ class MSAViewerComponent extends Component {
     //);
   }
   render() {
-    const {children, ...otherProps} = this.props;
+    const {children, msaStore, ...otherProps} = this.props;
     if (children) {
+      console.log("children: ", children);
       return (
-        <Provider store={this.props.store}>
+        <MSAProvider store={msaStore}>
           <div {...otherProps}>
             {children}
           </div>
-        </Provider>
+        </MSAProvider>
       );
     } else {
       // TODO: add more advanced layouts
-      const currentState = this.props.store.getState();
+      const currentState = msaStore.getState();
       const labelsPadding = currentState.viewpoint.tileSizes[1];
       const overviewBarHeight = currentState.viewpoint.overviewBar.height;
       const labelsStyle = {
@@ -54,7 +55,7 @@ class MSAViewerComponent extends Component {
         height: 10,
       };
       return (
-        <Provider store={this.props.store}>
+        <MSAProvider store={msaStore}>
           <div style={labelsAndSequenceDiv}>
             <Labels
               style={labelsStyle}
@@ -67,7 +68,7 @@ class MSAViewerComponent extends Component {
               <SequenceOverview />
             </div>
           </div>
-        </Provider>
+        </MSAProvider>
       );
     }
   }

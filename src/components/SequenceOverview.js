@@ -7,7 +7,7 @@
 */
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import msaConnect from '../store/connect'
 
 import { throttle, floor, clamp } from 'lodash';
 
@@ -136,6 +136,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(
+export default msaConnect(
   mapStateToProps,
 )(SequenceOverviewComponent);
