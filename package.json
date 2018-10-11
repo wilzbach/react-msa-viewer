@@ -12,6 +12,7 @@
     "plotly"
   ],
   "homepage": "https://github.com/plotly/react-msa-viewer",
+  "repository": "https://github.com/plotly/react-msa-viewer",
   "bugs": "https://github.com/plotly/react-msa-viewer/issues",
   "author": "Plotly, Inc",
   "license": "MIT",
