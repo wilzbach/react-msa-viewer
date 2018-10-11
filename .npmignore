@@ -2,3 +2,5 @@ public
 storybook-static
 src/stories
 *.test.js
+.storybook
+.travis.yml
