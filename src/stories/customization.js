@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { MSAViewer } from '../..';
+import { MSAViewer } from '../src/lib';
 import { select } from '@storybook/addon-knobs';
 
 storiesOf('Customization', module)

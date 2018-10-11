@@ -7,7 +7,7 @@
 */
 
 import React, { Component } from 'react';
-import MSAViewer from './components/MSAViewer';
+import MSAViewer from './lib';
 
 class App extends Component {
   render() {
