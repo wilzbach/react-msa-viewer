@@ -16,7 +16,7 @@
   "bugs": "https://github.com/plotly/react-msa-viewer/issues",
   "author": "Plotly, Inc",
   "license": "MIT",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
