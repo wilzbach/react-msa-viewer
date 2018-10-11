@@ -15,11 +15,8 @@ import SequenceOverview from './SequenceOverview';
 import OverviewBar from './OverviewBar';
 import Labels from './Labels';
 
-import {
-  pick
-} from 'lodash';
-
 import createMSAStore from '../store/createMSAStore';
+import propsToRedux from '../store/propsToRedux';
 
 const labelsAndSequenceDiv = {
   display: "flex",
@@ -28,19 +25,18 @@ const labelsAndSequenceDiv = {
 // TODO: support changing the store dynamically
 // TODO: when props of children update -> update store
 // TODO: support using the child components in stand-alone mode
-class MSAViewer extends Component {
+class MSAViewerComponent extends Component {
 
   componentWillMount() {
-    this.store = this.props.store || createMSAStore(
-      pick(this.props, ['position', 'sequences', 'ui', 'viewpoint'])
-    );
+    //this.store = this.props.store || createMSAStore(
+      //pick(this.props, MSAViewerProps)
+    //);
   }
   render() {
-    console.log(this.props);
     const {children, ...otherProps} = this.props;
     if (children) {
       return (
-        <Provider store={this.store}>
+        <Provider store={this.props.store}>
           <div {...otherProps}>
             {children}
           </div>
@@ -48,7 +44,7 @@ class MSAViewer extends Component {
       );
     } else {
       // TODO: add more advanced layouts
-      const currentState = this.store.getState();
+      const currentState = this.props.store.getState();
       const labelsPadding = currentState.viewpoint.tileSizes[1];
       const overviewBarHeight = currentState.viewpoint.overviewBar.height;
       const labelsStyle = {
@@ -58,7 +54,7 @@ class MSAViewer extends Component {
         height: 10,
       };
       return (
-        <Provider store={this.store}>
+        <Provider store={this.props.store}>
           <div style={labelsAndSequenceDiv}>
             <Labels
               style={labelsStyle}
@@ -76,6 +72,13 @@ class MSAViewer extends Component {
     }
   }
 }
+
+const MSAViewer = propsToRedux(MSAViewerComponent);
+
+MSAViewer.PropTypes = {
+  // store
+  // sequences, required
+};
 
 // TODO: re-include propsToRedux here?
 export default MSAViewer;

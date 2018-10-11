@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { MSAViewer } from '../src/lib';
+import { MSAViewer } from '../lib';
 import { times } from 'lodash';
 import { select, number } from '@storybook/addon-knobs';
 

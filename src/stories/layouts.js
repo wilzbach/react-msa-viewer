@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { MSAViewer } from '../src/lib';
+import { MSAViewer } from '../lib';
 
 import {
   createMSAStore,
@@ -17,7 +17,7 @@ import {
   PositionBar,
   SequenceOverview,
   SequenceViewer,
-} from '../..';
+} from '../lib';
 
 const sequences = [
   {

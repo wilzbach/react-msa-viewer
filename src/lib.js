@@ -7,5 +7,5 @@
 */
 
 import {MSAViewer} from './components/MSAViewer';
-export * from './components/MSAViewer';
 export default MSAViewer
+export * from './components/MSAViewer';
