@@ -20,7 +20,7 @@ import {
   isEqual,
   omit,
   pick,
-} from 'lodash';
+} from 'lodash-es';
 
 /// Maps property changes to redux actions
 const reduxActions = {

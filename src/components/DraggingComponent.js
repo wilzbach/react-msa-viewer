@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 
 import {
   throttle,
-} from 'lodash';
+} from 'lodash-es';
 import Mouse from '../utils/mouse';
 import Canvas from '../drawing/canvas';
 import WebGL from '../drawing/webgl';

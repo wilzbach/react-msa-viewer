@@ -21,7 +21,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "create-react-ref": "^0.1.0",
-    "lodash": "^4.17.11",
+    "lodash-es": "^4.17.11",
     "msa-colorschemes": "^1.0.10",
     "plotly-icons": "^1.2.2",
     "prop-types": "^15.6.2",

@@ -9,7 +9,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {MSAViewer} from '../lib';
-import {times} from 'lodash';
+import {times} from 'lodash-es';
 
 storiesOf('WIP', module)
  .add('WebGL', function(){

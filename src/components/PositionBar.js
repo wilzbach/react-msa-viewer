@@ -9,7 +9,7 @@
 import React, { Component } from 'react';
 import msaConnect from '../store/connect'
 
-import { throttle } from 'lodash';
+import { throttle } from 'lodash-es';
 
 import Canvas from '../drawing/canvas';
 

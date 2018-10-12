@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import { createStore } from 'redux'
 
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 import { MSAPropTypes, msaDefaultProps } from '../PropTypes';
 

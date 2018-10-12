@@ -8,7 +8,7 @@
 
 import {
   reduce,
-} from 'lodash';
+} from 'lodash-es';
 
 const calculateSequencesState = (sequences) => {
   const state = {

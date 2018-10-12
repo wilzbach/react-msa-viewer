@@ -10,7 +10,7 @@ import msaConnect from '../store/connect'
 
 import { updatePosition } from '../store/actions'
 
-import { floor, clamp } from 'lodash';
+import { floor, clamp } from 'lodash-es';
 
 import DraggingComponent from './DraggingComponent';
 
