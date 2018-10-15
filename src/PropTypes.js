@@ -44,7 +44,8 @@ export const msaDefaultProps = {
   viewpoint: {
     width: 500,
     height: 100,
-    tileSizes: [20, 20],
+    tileWidth: 20,
+    tileHeight: 20,
     tileFont: "20px Arial",
     position: {
       xPos: 0,

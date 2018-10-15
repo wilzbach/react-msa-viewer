@@ -39,7 +39,7 @@ class LabelsComponent extends Component {
   }
 
   draw() {
-    const [,tileHeight] = this.props.viewpoint.tileSizes;
+    const tileHeight = this.props.viewpoint.tileHeight;
     this.ctx.startDrawingFrame();
     let xPos = 0;
     let yPos = -this.props.position.yPos + 3;

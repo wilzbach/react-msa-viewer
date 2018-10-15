@@ -62,7 +62,8 @@ storiesOf('Basic', module)
       viewpoint: {
         height: number("height", 500),
         width: number("width", 500),
-        tileSizes: [number("xTileSize", 20), number("yTileSize", 20)],
+        tileHeight: number("tileHeight", 20),
+        tileWidth: number("tileWidth", 20),
       }
     };
     times(100, () => {

@@ -49,10 +49,9 @@ class SequenceOverviewComponent extends Component {
   drawScene() {
     this.scene = {};
     this.scene.viewpoint = this.props.viewpoint;
-    const [sequenceTileWidth, sequenceTileHeight] = this.props.viewpoint.tileSizes;
     ({xPos: this.scene.xViewPos, yPos: this.scene.yViewPos} = this.props.position);
-    this.scene.xScalingFactor = 1 / sequenceTileWidth * this.props.tileWidth;
-    this.scene.yScalingFactor = 1 / sequenceTileHeight * this.props.tileHeight;
+    this.scene.xScalingFactor = 1 / this.props.viewpoint.tileWidth * this.props.tileWidth;
+    this.scene.yScalingFactor = 1 / this.props.viewpoint.tileHeight * this.props.tileHeight;
     this.drawCurrentViewpoint();
     this.drawSequences();
   }

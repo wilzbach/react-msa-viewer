@@ -45,7 +45,7 @@ class MSAViewerComponent extends Component {
     } else {
       // TODO: add more advanced layouts
       const currentState = msaStore.getState();
-      const labelsPadding = currentState.viewpoint.tileSizes[1];
+      const labelsPadding = currentState.viewpoint.tileHeight;
       const overviewBarHeight = 50;
       const labelsStyle = {
         paddingTop: labelsPadding + overviewBarHeight,

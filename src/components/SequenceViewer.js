@@ -31,7 +31,8 @@ class SequenceViewerComponent extends DraggingComponent {
 
     const sequences = this.props.sequences.raw;
     const viewpoint = this.props.viewpoint;
-    const [tileWidth, tileHeight] = this.props.viewpoint.tileSizes;
+    const tileWidth = viewpoint.tileWidth;
+    const tileHeight = viewpoint.tileHeight;
     const {xPos: xViewPos, yPos: yViewPos} = this.props.position;
     const xInitPos = -(xViewPos % tileWidth);
     let yPos = -(yViewPos % tileHeight);
@@ -69,9 +70,9 @@ class SequenceViewerComponent extends DraggingComponent {
     pos.yPos += oldPos[1] - newPos[1];
     // TODO: need maximum of sequence lengths here
     const maximum = this.props.sequences.maxLength;
-    const maxWidth = maximum * viewpoint.tileSizes[0] - viewpoint.width;
+    const maxWidth = maximum * viewpoint.tileWidth - viewpoint.width;
     pos.xPos = clamp(pos.xPos, 0, maxWidth);
-    const maxHeight = this.props.sequences.raw.length * viewpoint.tileSizes[1] - viewpoint.height;
+    const maxHeight = this.props.sequences.raw.length * viewpoint.tileHeight - viewpoint.height;
     pos.yPos = clamp(pos.yPos, 0, maxHeight);
     this.props.updatePosition(pos);
   }

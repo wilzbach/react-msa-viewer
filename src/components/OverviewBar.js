@@ -42,7 +42,7 @@ class OverviewBarComponent extends Component {
     this.ctx.startDrawingFrame();
     this.ctx.font(this.props.viewpoint.positionFont);
 
-    const tileWidth = this.props.viewpoint.tileSizes[0];
+    const tileWidth = this.props.viewpoint.tileWidth;
     const yPos = 0;
     const startTile = Math.floor(this.props.position.xPos / tileWidth);
     const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
@@ -52,7 +52,7 @@ class OverviewBarComponent extends Component {
 			const remainingHeight = this.props.height - height;
       this.ctx.fillStyle(this.props.fillColor);
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
-      xPos += this.props.viewpoint.tileSizes[0];
+      xPos += this.props.viewpoint.tileWidth;
     }
     this.ctx.endDrawingFrame();
   }

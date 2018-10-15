@@ -15,10 +15,7 @@ import calculateSequencesState from './calculateSequencesState';
 const defaultViewpoint = {
   width: -1,
   height: -1,
-  tileSizes: [20, 20],
   tileFont: "",
-  labelFont: "",
-  positionFont: "",
 }
 
 // TODO: maybe combine with UI?

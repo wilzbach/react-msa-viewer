@@ -43,7 +43,8 @@ class PositionBarComponent extends Component {
     this.ctx.startDrawingFrame();
     this.ctx.font(this.props.font);
 
-    const [tileWidth, tileHeight] = this.props.viewpoint.tileSizes;
+    const tileWidth = this.props.viewpoint.tileWidth;
+    const tileHeight = this.props.viewpoint.tileHeight;
     const yPos = 0;
     const startTile = Math.floor(this.props.position.xPos / tileWidth) - 1 + this.props.startIndex;
     const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
@@ -54,7 +55,7 @@ class PositionBarComponent extends Component {
       } else {
         this.ctx.fillText(".", xPos, yPos, tileWidth, tileHeight);
       }
-      xPos += this.props.viewpoint.tileSizes[0];
+      xPos += this.props.viewpoint.tileHeight;
     }
     this.ctx.endDrawingFrame();
   }
