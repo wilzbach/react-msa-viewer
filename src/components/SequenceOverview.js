@@ -7,6 +7,7 @@
 */
 
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import msaConnect from '../store/connect'
 
 import { throttle, floor, clamp } from 'lodash-es';
@@ -18,10 +19,6 @@ import createRef from 'create-react-ref/lib/createRef';
 const schemes = new (require('msa-colorschemes'))();
 
 class SequenceOverviewComponent extends Component {
-
-  static defaultProps = {
-    height: 50,
-  }
 
   constructor(props) {
     super(props);
@@ -53,17 +50,15 @@ class SequenceOverviewComponent extends Component {
     this.scene = {};
     this.scene.viewpoint = this.props.viewpoint;
     const [sequenceTileWidth, sequenceTileHeight] = this.props.viewpoint.tileSizes;
-    ([this.scene.tileWidth, this.scene.tileHeight] = this.props.viewpoint.overviewTileSizes);
     ({xPos: this.scene.xViewPos, yPos: this.scene.yViewPos} = this.props.position);
-    this.scene.xScalingFactor = 1 / sequenceTileWidth * this.scene.tileWidth;
-    this.scene.yScalingFactor = 1 / sequenceTileHeight * this.scene.tileHeight;
+    this.scene.xScalingFactor = 1 / sequenceTileWidth * this.props.tileWidth;
+    this.scene.yScalingFactor = 1 / sequenceTileHeight * this.props.tileHeight;
     this.drawCurrentViewpoint();
     this.drawSequences();
   }
 
   drawSequences() {
     const {
-      tileWidth, tileHeight,
       viewpoint,
       xViewPos, xScalingFactor,
     } = this.scene;
@@ -85,12 +80,12 @@ class SequenceOverviewComponent extends Component {
         const el = sequence[j];
         this.ctx.fillStyle(this.scheme.getColor(el));
         this.ctx.globalAlpha(0.5);
-        this.ctx.fillRect(xPos, yPos, tileWidth, tileHeight);
-        xPos += tileWidth;
+        this.ctx.fillRect(xPos, yPos, this.props.tileWidth, this.props.tileHeight);
+        xPos += this.props.tileWidth;
         if (xPos > viewpoint.width)
             break;
       }
-      yPos += tileHeight;
+      yPos += this.props.tileHeight;
       if (yPos > viewpoint.height)
           break;
     }
@@ -126,6 +121,29 @@ class SequenceOverviewComponent extends Component {
     );
   }
 }
+
+SequenceOverviewComponent.defaultProps = {
+  height: 50,
+  tileWidth: 5,
+  tileHeight: 5,
+};
+
+SequenceOverviewComponent.PropTypes = {
+  /**
+   * Height of the SequenceOverview (in pixels), e.g. `50`
+   */
+  height: PropTypes.number,
+
+  /**
+   * Width of a tile in the OverviewBar, e.g. `5`
+   */
+  tileWidth: PropTypes.number,
+
+  /**
+   * Height of a tile in the OverviewBar, e.g. `5`
+   */
+  tileHeight: PropTypes.number,
+};
 
 const mapStateToProps = state => {
   return {

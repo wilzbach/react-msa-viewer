@@ -8,6 +8,7 @@
 
 import React, { Component } from 'react';
 import msaConnect from '../store/connect'
+import PropTypes from 'prop-types';
 
 import { throttle } from 'lodash-es';
 
@@ -42,7 +43,7 @@ class LabelsComponent extends Component {
     this.ctx.startDrawingFrame();
     let xPos = 0;
     let yPos = -this.props.position.yPos + 3;
-    this.ctx.font(this.props.viewpoint.labelSize);
+    this.ctx.font(this.props.font);
     for (let i = 0; i < this.props.nrSequences; i++) {
       let label;
       if (this.props.labels[i]) {
@@ -68,6 +69,18 @@ class LabelsComponent extends Component {
       </div>
     );
   }
+}
+
+LabelsComponent.PropTypes = {
+  /**
+   * Font of the sequence labels, e.g. `20px Arial`
+   */
+  font: PropTypes.string,
+
+  /**
+   * Width of the OverviewBar (in pixels), e.g. `100`
+   */
+  width: PropTypes.number,
 }
 
 const mapStateToProps = state => {

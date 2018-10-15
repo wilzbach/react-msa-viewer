@@ -9,6 +9,8 @@
 import React, { Component } from 'react';
 import msaConnect from '../store/connect'
 
+import PropTypes from 'prop-types';
+
 import { throttle } from 'lodash-es';
 
 import Canvas from '../drawing/canvas';
@@ -18,10 +20,6 @@ import createRef from 'create-react-ref/lib/createRef';
 const MSAStats = require('stat.seqs');
 
 class OverviewBarComponent extends Component {
-
-  static defaultProps = {
-    method: "conservation",
-  }
 
   constructor(props) {
     super(props);
@@ -50,9 +48,9 @@ class OverviewBarComponent extends Component {
     const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
     let xPos = -this.props.position.xPos % tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
-			let height = this.props.styling.height * this.columnHeights[i];
-			const remainingHeight = this.props.styling.height - height;
-      this.ctx.fillStyle(this.props.styling.fillColor);
+			let height = this.props.height * this.columnHeights[i];
+			const remainingHeight = this.props.height - height;
+      this.ctx.fillStyle(this.props.fillColor);
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
       xPos += this.props.viewpoint.tileSizes[0];
     }
@@ -67,8 +65,6 @@ class OverviewBarComponent extends Component {
       case "conservation":
         this.columnHeights = stats.scale(stats.conservation());
         break;
-      case "ic":
-      case "information":
       case "information-content":
         this.columnHeights = stats.scale(stats.ic());
         break;
@@ -82,18 +78,42 @@ class OverviewBarComponent extends Component {
       <canvas
         ref={this.canvas}
         width={this.props.viewpoint.width}
-        height={this.props.styling.height}
+        height={this.props.height}
       />
     );
   }
 }
+
+OverviewBarComponent.defaultProps = {
+  height: 50,
+  fillColor: "#999999",
+  method: "conservation",
+}
+
+OverviewBarComponent.PropTypes = {
+  /**
+   * Method to use for the OverviewBar:
+   *  - `information-content`: Information entropy after Shannon of a column (scaled)
+   *  - `conservation`: Conservation of a column (scaled)
+   */
+  method: PropTypes.oneOf('information-content', 'conservation'),
+
+  /**
+   * Height of the OverviewBar (in pixels), e.g. `100`
+   */
+  height: PropTypes.number,
+
+  /**
+   * Fill color of the OverviewBar, e.g. `#999999`
+   */
+  fillColor: PropTypes.string,
+};
 
 const mapStateToProps = state => {
   return {
     sequences: state.sequences.raw,
     position: state.position,
     viewpoint: state.viewpoint,
-    styling: state.viewpoint.overviewBar,
   }
 }
 

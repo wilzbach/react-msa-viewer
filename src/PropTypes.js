@@ -8,6 +8,11 @@
 
 import PropTypes from 'prop-types';
 
+/**
+ * Definition of a single sequence object.
+ *   name: label or id of the sequence (doesn't need to be unique)
+ *   sequence: raw sequence data (e.g. AGAAAA)
+ */
 export const SequencePropType = PropTypes.shape({
   name: PropTypes.string,
   sequence: PropTypes.string,
@@ -16,12 +21,9 @@ export const SequencePropType = PropTypes.shape({
 export const ViewpointPropType = PropTypes.shape({
   width: PropTypes.number,
   height: PropTypes.number,
-  tileSizes: PropTypes.arrayOf(PropTypes.number), // TODO: check element size or use an object
-  overviewTileSizes: PropTypes.arrayOf(PropTypes.number), // TODO: check element size or use an object
+  tileWidth: PropTypes.number,
+  tileHeight: PropTypes.number,
   tileFont: PropTypes.string,
-  labelFont: PropTypes.string,
-  markerFont: PropTypes.string,
-  markerHeight: PropTypes.number,
 });
 
 export const UIPropType = PropTypes.shape({
@@ -43,20 +45,12 @@ export const msaDefaultProps = {
     width: 500,
     height: 100,
     tileSizes: [20, 20],
-    overviewTileSizes: [5, 5],
     tileFont: "20px Arial",
-    labelFont: "20px Arial",
-    markerFont: "12px Arial",
-    markerHeight: "15",
     position: {
       xPos: 0,
       yPos: 0,
     },
     msecsPerFps: 1000  / 60,
-    overviewBar: {
-      height: 50,
-      fillColor: "#999999",
-    },
   },
   ui: {
     color: "red",
@@ -64,3 +58,5 @@ export const msaDefaultProps = {
     engine: "canvas",
   }
 };
+
+export {PropTypes};

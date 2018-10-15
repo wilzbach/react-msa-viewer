@@ -9,6 +9,11 @@
 import React, { Component } from 'react';
 import MSAProvider from '../store/provider';
 
+import {
+  PropTypes,
+  SequencePropType,
+} from '../PropTypes';
+
 import PositionBar from './PositionBar';
 import SequenceViewer from './SequenceViewer';
 import SequenceOverview from './SequenceOverview';
@@ -27,15 +32,9 @@ const labelsAndSequenceDiv = {
 // TODO: support using the child components in stand-alone mode
 class MSAViewerComponent extends Component {
 
-  componentWillMount() {
-    //this.store = this.props.store || createMSAStore(
-      //pick(this.props, MSAViewerProps)
-    //);
-  }
   render() {
     const {children, msaStore, ...otherProps} = this.props;
     if (children) {
-      console.log("children: ", children);
       return (
         <MSAProvider store={msaStore}>
           <div {...otherProps}>
@@ -47,7 +46,7 @@ class MSAViewerComponent extends Component {
       // TODO: add more advanced layouts
       const currentState = msaStore.getState();
       const labelsPadding = currentState.viewpoint.tileSizes[1];
-      const overviewBarHeight = currentState.viewpoint.overviewBar.height;
+      const overviewBarHeight = 50;
       const labelsStyle = {
         paddingTop: labelsPadding + overviewBarHeight,
       }
@@ -61,7 +60,7 @@ class MSAViewerComponent extends Component {
               style={labelsStyle}
             />
             <div>
-              <OverviewBar />
+              <OverviewBar height={overviewBarHeight} />
               <PositionBar />
               <SequenceViewer />
               <div style={separatorPadding} />
@@ -77,8 +76,16 @@ class MSAViewerComponent extends Component {
 const MSAViewer = propsToRedux(MSAViewerComponent);
 
 MSAViewer.PropTypes = {
-  // store
-  // sequences, required
+  /**
+   * A custom msaStore (created with `createMSAStore`).
+   * Useful for custom interaction with other components
+   */
+  msaStore: PropTypes.object,
+
+  /**
+   * Sequence data.
+   */
+  sequences: PropTypes.arrayOf(SequencePropType),
 };
 
 // TODO: re-include propsToRedux here?

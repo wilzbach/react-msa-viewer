@@ -42,7 +42,6 @@ export const propsToRedux = (WrappedComponent) => {
       this.msaStore = props.msaStore;
       if (storeProps.sequences !== undefined) {
         this.msaStore = createMSAStore(storeProps);
-        console.log("STORE", this.msaStore.getState());
       } else {
         console.warn("Check your MSA properties", storeProps);
       }
@@ -68,7 +67,6 @@ export const propsToRedux = (WrappedComponent) => {
       if (this.msaStore === undefined) {
         return (<div> error... </div>)
       } else {
-        console.log("PROPS", this.msaStore.getState());
         return (
           <WrappedComponent msaStore={msaStore || this.msaStore} {...props} />
         );
