@@ -7,7 +7,6 @@
 */
 
 import React, { Component } from 'react';
-import msaConnect from '../store/connect'
 import MSAProvider from '../store/provider';
 
 import {
@@ -22,7 +21,6 @@ import SequenceOverview from './SequenceOverview';
 import OverviewBar from './OverviewBar';
 import Labels from './Labels';
 
-import createMSAStore from '../store/createMSAStore';
 import propsToRedux from '../store/propsToRedux';
 
 const labelsAndSequenceDiv = {
@@ -79,7 +77,7 @@ const MSAViewer = propsToRedux(MSAViewerComponent);
 
 MSAViewer.defaultProps = msaDefaultProps;
 
-MSAViewer.PropTypes = {
+MSAViewer.propTypes = {
   /**
    * A custom msaStore (created with `createMSAStore`).
    * Useful for custom interaction with other components
@@ -90,14 +88,3 @@ MSAViewer.PropTypes = {
 };
 
 export default MSAViewer;
-export {
-  createMSAStore,
-  msaConnect,
-  Labels,
-  MSAViewer,
-  MSAProvider,
-  OverviewBar,
-  PositionBar,
-  SequenceOverview,
-  SequenceViewer,
-};

@@ -27,6 +27,11 @@ class LabelsComponent extends CanvasComponent {
       yPos += this.props.tileHeight;
     }
   }
+
+  // to make react-docgen happy
+  render() {
+    super.render();
+  }
 }
 
 LabelsComponent.defaultProps = {
@@ -34,8 +39,8 @@ LabelsComponent.defaultProps = {
   width: 80, // TODO: can we calculate this automatically?
 };
 
-LabelsComponent.PropTypes = {
-  ...CanvasComponent.PropTypes,
+LabelsComponent.propTypes = {
+  ...CanvasComponent.propTypes,
   /**
    * Font of the sequence labels, e.g. `20px Arial`
    */

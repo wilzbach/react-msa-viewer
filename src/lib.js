@@ -6,6 +6,27 @@
 * LICENSE file in the root directory of this source tree.
 */
 
-import {MSAViewer} from './components/MSAViewer';
-export default MSAViewer
-export * from './components/MSAViewer';
+import msaConnect from './store/connect'
+import createMSAStore from './store/createMSAStore';
+import MSAProvider from './store/provider';
+
+import Labels from './components/Labels';
+import MSAViewer from './components/MSAViewer';
+import PositionBar from './components/PositionBar';
+import SequenceViewer from './components/SequenceViewer';
+import SequenceOverview from './components/SequenceOverview';
+import OverviewBar from './components/OverviewBar';
+
+export {
+  createMSAStore,
+  msaConnect,
+  Labels,
+  MSAViewer,
+  MSAProvider,
+  OverviewBar,
+  PositionBar,
+  SequenceOverview,
+  SequenceViewer,
+};
+
+export default MSAViewer;

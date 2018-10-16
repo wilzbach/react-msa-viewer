@@ -57,6 +57,11 @@ class OverviewBarComponent extends CanvasComponent {
         console.error(this.props.method + "is an invalid aggregation method for <OverviewBar />");
     }
   }
+
+  // to make react-docgen happy
+  render() {
+    super.render();
+  }
 }
 
 OverviewBarComponent.defaultProps = {

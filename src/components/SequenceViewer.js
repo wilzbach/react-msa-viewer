@@ -85,6 +85,11 @@ class SequenceViewerComponent extends DraggingComponent {
     ////return this.props.target !== newProps.target;
     //return true;
   //}
+
+  // to make react-docgen happy
+  render() {
+    super.render();
+  }
 }
 
 SequenceViewerComponent.defaultProps = {

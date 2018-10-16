@@ -38,7 +38,8 @@
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "prepare": "npm run build:lib"
+    "prepare": "npm run build:lib",
+    "docs": "react-docgen -i DraggingComponent -i CanvasComponent src/components | ./docs/build"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.4.10",
@@ -50,6 +51,7 @@
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
+    "react-docgen": "^2.21.0",
     "react-dom": "^15.4.2",
     "react-scripts": "1.1.4"
   }

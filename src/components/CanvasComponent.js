@@ -75,7 +75,7 @@ class CanvasComponent extends Component {
   }
 }
 
-CanvasComponent.PropTypes = {
+CanvasComponent.propTypes = {
   /**
    * Width of the component (in pixels), e.g. `100`
    */

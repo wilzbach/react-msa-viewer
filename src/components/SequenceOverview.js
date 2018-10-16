@@ -124,7 +124,7 @@ SequenceOverviewComponent.defaultProps = {
   tileHeight: 5,
 };
 
-SequenceOverviewComponent.PropTypes = {
+SequenceOverviewComponent.propTypes = {
   /**
    * Height of the SequenceOverview (in pixels), e.g. `50`
    */

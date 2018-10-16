@@ -37,6 +37,11 @@ class PositionBarComponent extends CanvasComponent {
       xPos += this.props.tileHeight;
     }
   }
+
+  // to make react-docgen happy
+  render() {
+    super.render();
+  }
 }
 
 PositionBarComponent.defaultProps = {
@@ -47,8 +52,8 @@ PositionBarComponent.defaultProps = {
   startIndex: 1,
 };
 
-PositionBarComponent.PropTypes = {
-  ...CanvasComponent.PropTypes,
+PositionBarComponent.propTypes = {
+  ...CanvasComponent.propTypes,
   /**
    * Font of the sequence labels, e.g. `20px Arial`
    */
