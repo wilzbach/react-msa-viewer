@@ -19,11 +19,9 @@ class SequenceOverviewComponent extends CanvasComponent {
 
   draw = () => {
     // TODO: only update this if required
-    this.ctx.save();
     // TODO: only update the scheme when it changed
     this.scheme = schemes.getScheme(this.props.colorScheme);
     this.drawScene();
-    this.ctx.restore();
   }
 
   drawScene() {
