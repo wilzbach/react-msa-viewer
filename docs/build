@@ -5,40 +5,65 @@
  * e.g. react-docgen src/components/* | docs/build
  */
 
-var fs = require('fs');
-var generateMarkdown = require('./generateMarkdown');
-var path = require('path');
+const fs = require('fs');
+const generateMarkdown = require('./generateMarkdown');
+const path = require('path');
+const _ = require('lodash');
+
+const docgen = require('react-docgen')
+const externalProptypesHandler = require('react-docgen-external-proptypes-handler')
 
 const baseDir = __dirname;
+const components = [
+  'MSAViewer',
+  'CanvasComponent',
+  'DraggingComponent',
+  'Labels',
+  'OverviewBar',
+  'PositionBar',
+  'SequenceOverview',
+  'SequenceViewer',
+];
+const files = components.map(f => `${__dirname}/../src/components/${f}.js`);
+const ignoredComponents = [
+  'DraggingComponent',
+  'CanvasComponent',
+];
+const componentCache = {};
 
-var json = '';
-process.stdin.setEncoding('utf8');
-process.stdin.on('readable', function() {
-  var chunk = process.stdin.read();
-  if (chunk !== null) {
-    json += chunk;
+let metadata = files.map(file => {
+  /* append display name handler to handlers list */
+  const handlers = docgen.defaultHandlers.concat(externalProptypesHandler(file));
+
+  /* read file to get source code */
+  const code = fs.readFileSync(file, 'utf8');
+
+  /* parse the component code to get metadata */
+  const data = docgen.parse(code, null, handlers);
+  componentCache[getComponentName(file)] = data;
+  return data;
+})
+
+Object.keys(componentCache).forEach(key => {
+  if ("composes" in componentCache[key]) {
+      componentCache[key]["composes"].forEach(composes => {
+        const composesObject = componentCache[getComponentName(composes)].props;
+        componentCache[key].props = _.merge(componentCache[key].props, composesObject);
+      });
   }
 });
 
-process.stdin.on('end', function() {
-  buildDocs(JSON.parse(json));
+_.difference(components, ignoredComponents).forEach(component => {
+  buildComponent(component, componentCache[component]);
 });
 
-function buildDocs(api) {
-  // api is an object keyed by filepath. We use the file name as component name.
-  for (var filepath in api) {
+function buildComponent(filepath, api) {
     var name = getComponentName(filepath);
-    var markdown = generateMarkdown(name, api[filepath]);
+    var markdown = generateMarkdown(name, api);
     fs.writeFileSync(baseDir + '/' + name + '.md', markdown);
-    process.stdout.write(filepath + ' -> ' + name + '.md\n');
-  }
+    console.log(generateMarkdown(name, api, 3));
 }
 
 function getComponentName(filepath) {
-  var name = path.basename(filepath);
-  var ext;
-  while ((ext = path.extname(name))) {
-    name = name.substring(0, name.length - ext.length);
-  }
-  return name;
+  return path.parse(filepath).name;
 }

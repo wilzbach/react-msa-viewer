@@ -10,6 +10,9 @@ import PropTypes from 'prop-types';
 import msaConnect from '../store/connect'
 import CanvasComponent from './CanvasComponent';
 
+/**
+ * Displays the sequence names.
+ */
 class LabelsComponent extends CanvasComponent {
 
   draw() {

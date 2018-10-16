@@ -95,6 +95,11 @@ CanvasComponent.propTypes = {
    * Rendering engine: `canvas` or `webgl` (experimental).
    */
   engine: PropTypes.oneOf(['canvas', 'webgl']),
+
+  /**
+   * Maximum number of frames per second, e.g. `1000 / 60`
+   */
+  msecsPerSecs: PropTypes.number,
 }
 
 export default CanvasComponent;

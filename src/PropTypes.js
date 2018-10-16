@@ -35,6 +35,25 @@ export const PositionPropType = PropTypes.shape({
 export const MSAPropTypes = {
   /**
    * Sequence data.
+   * `sequences` expects an array of individual sequences.
+   *
+   * `sequence`: Raw sequence, e.g. `MEEPQSDPSIEP` (required)
+   * `name`: name of the sequence, e.g. `Sequence X`
+   *
+   * Example:
+   *
+   * ```js
+   * const sequences = [
+   *   {
+   *     name: "seq.1",
+   *     sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED",
+   *   },
+   *   {
+   *     name: "seq.2",
+   *     sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP",
+   *   },
+   * ];
+   * ```
    */
   sequences: PropTypes.arrayOf(SequencePropType).isRequired,
 

@@ -25,6 +25,3 @@ yarn-error.log*
 
 # distribution files
 /dist
-
-# generated documentation
-docs/*.md

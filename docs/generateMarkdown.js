@@ -7,6 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+const _ = require('lodash');
+
 function stringOfLength(string, length) {
   let newString = '';
   for (let i = 0; i < length; i++) {
@@ -15,9 +17,9 @@ function stringOfLength(string, length) {
   return newString;
 }
 
-function generateTitle(name) {
+function generateTitle(name, level) {
   const title = '`' + name + '` (component)';
-  return title + '\n' + stringOfLength('=', title.length) + '\n';
+  return stringOfLength('#', level) + ' ' + title + '\n'
 }
 
 function generateDesciption(description) {
@@ -46,9 +48,9 @@ function generatePropDefaultValue(value) {
   return 'defaultValue: `' + value.value + '`\n';
 }
 
-function generateProp(propName, prop) {
+function generateProp(propName, prop, level) {
   return (
-    '### `' +
+    stringOfLength('#', level) + ' `' +
     propName +
     '`' +
     (prop.required ? ' (required)' : '') +
@@ -61,34 +63,33 @@ function generateProp(propName, prop) {
   );
 }
 
-function generateProps(props) {
+function generateProps(props, level) {
   const title = 'Props';
   if (!props) {
     return 'TBD';
   }
 
   return (
+    stringOfLength('#', level) + ' ' +
     title +
-    '\n' +
-    stringOfLength('-', title.length) +
     '\n' +
     '\n' +
     Object.keys(props)
       .sort()
       .map(function(propName) {
-        return generateProp(propName, props[propName]);
+        return generateProp(propName, props[propName], level + 1);
       })
       .join('\n')
   );
 }
 
-function generateMarkdown(name, reactAPI) {
+function generateMarkdown(name, reactAPI, level = 1) {
   const markdownString =
-    generateTitle(name) +
+    generateTitle(name, level) +
     '\n' +
     generateDesciption(reactAPI.description) +
     '\n' +
-    generateProps(reactAPI.props);
+    generateProps(reactAPI.props, level + 1);
 
   return markdownString;
 }

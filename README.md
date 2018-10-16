@@ -72,104 +72,200 @@ Props
 
 __Warning__: these properties are still suspectible to a _change at any moment_.
 
-### `sequences` (required)
+### `MSAViewer` (component)
 
-`sequences` expects an array of individual sequences.
-Example:
+TBD.
 
-```js
-const sequences = [
-  {
-    name: "seq.1",
-    sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED",
-  },
-  {
-    name: "seq.2",
-    sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP",
-  },
-];
-```
+### `Labels` (component)
 
-#### `sequence` (required)
+Displays the sequence names.
 
-Raw sequence, e.g. `MEEPQSDPSIEP`
+#### Props
 
-#### `name`
+##### `engine`
 
-Name of the sequence, e.g. `Sequence X`
+Rendering engine: `canvas` or `webgl` (experimental).
 
-### `ui` (optional)
+type: `enum('canvas'|'webgl')`
+defaultValue: `"canvas"`
 
-The `ui` can be customized with:
 
-#### `color`
+##### `font`
 
-TODO.
+Font of the sequence labels, e.g. `20px Arial`
 
-#### `scheme`
+type: `string`
 
-Colorscheme to use. Currently the follow colorschemes are supported:
-`buried_index`, `clustal`, `clustal2`, `cinema`, `helix_propensity`, `hydro`,
-`lesk`, `mae`, `nucleotide`, `purine_pyrimidine`, `strand_propensity`, `taylor`,
-`turn_propensity`, and `zappo`.
-
-See [msa-colorschemes](https://github.com/wilzbach/msa-colorschemes) for details.
-
-### `viewpoint` (optional)
-
-#### `width`
-
-Width of the sequence viewer (in pixels), e.g. `500`.
-
-#### `height`
-
-Height of the sequence viewer (in pixels), e.g. `100`.
-
-#### `tileSizes`
-
-Width and height of the sequence viewer tiles (in pixels), e.g. `[20, 20]`.
-
-#### `overviewTileSizes`
-
-Width and height of the sequence viewer tiles (in pixels), e.g. `[5, 5]`.
-
-#### `tileFont`
-
-Font of the individual residue tiles, e.g. `"20px Arial"`.
-
-#### `labelFont`
-
-Font of the sequence labels, e.g. `"20px Arial"`.
-
-#### `markerFont`
-
-Font of the position markers, e.g. `"12px Arial"`.
-
-#### `markerHeight`
-
-Height of the position marker (in pixels), e.g. `15`.
-
-#### `position`
-
-Current x and y position of the viewpoint in the main sequence viewer (in pixels).
-This specifies the position of the top-left corner of the viewpoint within the
-entire alignment, e.g. `{xPos: 20, yPos: 5}`.
-
-#### `msecsPerFps`
-
-Maximum number of frames per second, e.g. `10000 / 60`.
-
-#### `overviewBar`
-
-Styling for the `OverviewBar` component.
-
-##### `fillColor`
-
-Fill color of the plot's bars, e.g. `#999999`.
 
 ##### `height`
 
-Maximal height of the overview bar (in pixels), e.g. `50`.
+Width of the component (in pixels), e.g. `100`
+
+type: `number`
+defaultValue: `100`
+
+
+##### `msecsPerFps`
+
+defaultValue: `60`
+
+
+##### `msecsPerSecs`
+
+Maximum number of frames per second, e.g. `1000 / 60`
+
+type: `number`
+
+
+##### `style`
+
+Custom style configuration.
+
+type: `object`
+
+
+##### `width`
+
+Width of the component (in pixels), e.g. `100`
+
+type: `number`
+defaultValue: `100`
+
+
+### `OverviewBar` (component)
+
+Creates a small overview box of the sequences for a general overview.
+
+#### Props
+
+##### `fillColor`
+
+defaultValue: `"#999999"`
+
+
+##### `height`
+
+defaultValue: `50`
+
+
+##### `method`
+
+defaultValue: `"conservation"`
+
+
+### `PositionBar` (component)
+
+Creates a PositionBar of markers for every n-th sequence column.
+
+#### Props
+
+##### `engine`
+
+Rendering engine: `canvas` or `webgl` (experimental).
+
+type: `enum('canvas'|'webgl')`
+defaultValue: `"canvas"`
+
+
+##### `font`
+
+Font of the sequence labels, e.g. `20px Arial`
+
+type: `string`
+defaultValue: `"12px Arial"`
+
+
+##### `height`
+
+Width of the component (in pixels), e.g. `100`
+
+type: `number`
+defaultValue: `100`
+
+
+##### `markerSteps`
+
+At which steps the position labels should appear, e.g. `2` for (1, 3, 5)
+
+type: `number`
+defaultValue: `2`
+
+
+##### `msecsPerFps`
+
+defaultValue: `60`
+
+
+##### `msecsPerSecs`
+
+Maximum number of frames per second, e.g. `1000 / 60`
+
+type: `number`
+
+
+##### `startIndex`
+
+At which number the PositionBar marker should start counting.
+Typical values are: `1` (1-based indexing) and `0` (0-based indexing).
+
+type: `number`
+defaultValue: `1`
+
+
+##### `style`
+
+Custom style configuration.
+
+type: `object`
+
+
+##### `width`
+
+Width of the component (in pixels), e.g. `100`
+
+type: `number`
+defaultValue: `100`
+
+
+### `SequenceOverview` (component)
+
+
+
+#### Props
+
+##### `height`
+
+Height of the SequenceOverview (in pixels), e.g. `50`
+
+type: `number`
+defaultValue: `50`
+
+
+##### `tileHeight`
+
+Height of a tile in the OverviewBar, e.g. `5`
+
+type: `number`
+defaultValue: `5`
+
+
+##### `tileWidth`
+
+Width of a tile in the OverviewBar, e.g. `5`
+
+type: `number`
+defaultValue: `5`
+
+
+### `SequenceViewer` (component)
+
+
+
+#### Props
+
+##### `showModBar`
+
+defaultValue: `true`
 
 Development
 -----------
