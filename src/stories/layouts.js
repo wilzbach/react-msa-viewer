@@ -127,7 +127,7 @@ storiesOf('Layouting', module)
     };
     const store = createMSAStore(options);
     const labelsStyle = {
-      paddingTop: store.getState().viewpoint.tileHeight,
+      paddingTop: store.getState().tileHeight,
     }
     return (
       <MSAViewer store={store}>
