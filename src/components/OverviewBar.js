@@ -5,47 +5,33 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-
-import React, { Component } from 'react';
-import msaConnect from '../store/connect'
-
 import PropTypes from 'prop-types';
 
-import { throttle } from 'lodash-es';
-
-import Canvas from '../drawing/canvas';
-
-import createRef from 'create-react-ref/lib/createRef';
+import msaConnect from '../store/connect'
+import CanvasComponent from './CanvasComponent';
 
 const MSAStats = require('stat.seqs');
 
-class OverviewBarComponent extends Component {
+/**
+ * Creates a small overview box of the sequences for a general overview.
+ */
+class OverviewBarComponent extends CanvasComponent {
 
   constructor(props) {
     super(props);
-    this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.msecsPerFps);
     this.calculateStats();
-  }
-
-  componentDidMount() {
-    this.ctx = new Canvas(this.canvas.current);
-    this.draw();
   }
 
   componentDidUpdate() {
     this.calculateStats();
-    this.draw();
+    super.componentDidUpdate();
   }
 
   draw() {
-    this.ctx.startDrawingFrame();
-    //this.ctx.font(this.props.viewpoint.positionFont);
-
     const tileWidth = this.props.tileWidth;
     const yPos = 0;
     const startTile = Math.floor(this.props.position.xPos / tileWidth);
-    const tiles = Math.ceil(this.props.globalWidth / tileWidth) + 1;
+    const tiles = Math.ceil(this.props.width / tileWidth) + 1;
     let xPos = -this.props.position.xPos % tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
 			let height = this.props.height * this.columnHeights[i];
@@ -54,7 +40,6 @@ class OverviewBarComponent extends Component {
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
       xPos += this.props.tileWidth;
     }
-    this.ctx.endDrawingFrame();
   }
 
   // TODO: do smarter caching here
@@ -72,25 +57,17 @@ class OverviewBarComponent extends Component {
         console.error(this.props.method + "is an invalid aggregation method for <OverviewBar />");
     }
   }
-
-  render() {
-    return (
-      <canvas
-        ref={this.canvas}
-        width={this.props.globalWidth}
-        height={this.props.height}
-      />
-    );
-  }
 }
 
 OverviewBarComponent.defaultProps = {
+  ...CanvasComponent.defaultProps,
   height: 50,
   fillColor: "#999999",
   method: "conservation",
 }
 
 OverviewBarComponent.PropTypes = {
+  ...CanvasComponent.PropTypes,
   /**
    * Method to use for the OverviewBar:
    *  - `information-content`: Information entropy after Shannon of a column (scaled)
@@ -113,9 +90,9 @@ const mapStateToProps = state => {
   return {
     sequences: state.sequences.raw,
     position: state.position,
+    width: state.props.width,
     tileHeight: state.props.tileHeight,
     tileWidth: state.props.tileWidth,
-    globalWidth: state.props.width,
     msecsPerFps: state.props.msecsPerFps,
   }
 }

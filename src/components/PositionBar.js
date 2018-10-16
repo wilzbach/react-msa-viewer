@@ -5,16 +5,10 @@
 * This source code is licensed under the MIT license found in the
 * LICENSE file in the root directory of this source tree.
 */
-
-import React, { Component } from 'react';
-import msaConnect from '../store/connect'
 import PropTypes from 'prop-types';
 
-import { throttle } from 'lodash-es';
-
-import Canvas from '../drawing/canvas';
-
-import createRef from 'create-react-ref/lib/createRef';
+import msaConnect from '../store/connect'
+import CanvasComponent from './CanvasComponent';
 
 /**
 TODO:
@@ -22,30 +16,17 @@ TODO:
 - make styling flexible
 */
 
-class PositionBarComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.msecsPerFps);
-  }
-
-  componentDidMount() {
-    this.ctx = new Canvas(this.canvas.current);
-    this.draw();
-  }
-
-  componentDidUpdate() {
-    this.draw();
-  }
+/**
+ * Creates a PositionBar of markers for every n-th sequence column.
+ */
+class PositionBarComponent extends CanvasComponent {
 
   draw() {
-    this.ctx.startDrawingFrame();
     this.ctx.font(this.props.font);
 
     const yPos = 0;
     const startTile = Math.floor(this.props.position.xPos / this.props.tileWidth) - 1 + this.props.startIndex;
-    const tiles = Math.ceil(this.props.globalWidth / this.props.tileWidth) + 1;
+    const tiles = Math.ceil(this.props.width / this.props.tileWidth) + 1;
     let xPos = -this.props.position.xPos % this.props.tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
       if (i % this.props.markerSteps === 0) {
@@ -55,26 +36,11 @@ class PositionBarComponent extends Component {
       }
       xPos += this.props.tileHeight;
     }
-    this.ctx.endDrawingFrame();
-  }
-
-  render() {
-    const style = {
-      display: "block",
-    };
-		const height = this.props.height * 1 + 2;
-    return (
-      <canvas
-        ref={this.canvas}
-        width={this.props.globalWidth}
-        height={height}
-				style={style}
-      />
-    );
   }
 }
 
 PositionBarComponent.defaultProps = {
+  ...CanvasComponent.defaultProps,
   font: "12px Arial",
   height: 15,
   markerSteps: 2,
@@ -82,6 +48,7 @@ PositionBarComponent.defaultProps = {
 };
 
 PositionBarComponent.PropTypes = {
+  ...CanvasComponent.PropTypes,
   /**
    * Font of the sequence labels, e.g. `20px Arial`
    */
@@ -111,7 +78,7 @@ const mapStateToProps = state => {
     maxLength: state.sequences.maxLength,
     tileWidth: state.props.tileWidth,
     tileHeight: state.props.tileHeight,
-    globalWidth: state.props.width,
+    width: state.props.width,
     msecsPerFps: state.props.msecsPerFps,
   }
 };
