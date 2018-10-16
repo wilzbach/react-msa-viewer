@@ -88,7 +88,7 @@ class SequenceViewerComponent extends DraggingComponent {
 
   // to make react-docgen happy
   render() {
-    super.render();
+    return super.render();
   }
 }
 

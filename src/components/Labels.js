@@ -33,7 +33,7 @@ class LabelsComponent extends CanvasComponent {
 
   // to make react-docgen happy
   render() {
-    super.render();
+    return super.render();
   }
 }
 

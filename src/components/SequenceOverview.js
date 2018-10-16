@@ -6,44 +6,24 @@
 * LICENSE file in the root directory of this source tree.
 */
 
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import CanvasComponent from './CanvasComponent';
 import msaConnect from '../store/connect'
 
-import { throttle, floor, clamp } from 'lodash-es';
-
-import Canvas from '../drawing/canvas';
-
-import createRef from 'create-react-ref/lib/createRef';
+import { floor, clamp } from 'lodash-es';
 
 const schemes = new (require('msa-colorschemes'))();
 
-class SequenceOverviewComponent extends Component {
-
-  constructor(props) {
-    super(props);
-    this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.msecsPerFps);
-  }
-
-  componentDidMount() {
-    this.ctx = new Canvas(this.canvas.current);
-    this.draw();
-  }
-
-  componentDidUpdate() {
-    this.draw();
-  }
+class SequenceOverviewComponent extends CanvasComponent {
 
   draw = () => {
     // TODO: only update this if required
-    this.ctx.startDrawingFrame();
     this.ctx.save();
     // TODO: only update the scheme when it changed
     this.scheme = schemes.getScheme(this.props.colorScheme);
     this.drawScene();
     this.ctx.restore();
-    this.ctx.endDrawingFrame();
   }
 
   drawScene() {
@@ -103,28 +83,21 @@ class SequenceOverviewComponent extends Component {
     );
   }
 
+  // to make react-docgen happy
   render() {
-    const style = {
-      display: "block",
-    };
-    return (
-      <canvas
-        ref={this.canvas}
-        width={this.props.globalWidth}
-        height={this.props.height}
-        style={style}
-      />
-    );
+    return super.render();
   }
 }
 
 SequenceOverviewComponent.defaultProps = {
+  ...CanvasComponent.defaultProps,
   height: 50,
   tileWidth: 5,
   tileHeight: 5,
 };
 
 SequenceOverviewComponent.propTypes = {
+  ...CanvasComponent.propTypes,
   /**
    * Height of the SequenceOverview (in pixels), e.g. `50`
    */
@@ -147,6 +120,7 @@ const mapStateToProps = state => {
     viewpoint: state.viewpoint,
     ui: state.ui,
     sequences: state.sequences,
+    width: state.props.width,
     globalWidth: state.props.width,
     globalHeight: state.props.height,
     msecsPerFps: state.props.msecsPerFps,
