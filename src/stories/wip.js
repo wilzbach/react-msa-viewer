@@ -14,10 +14,7 @@ import {times} from 'lodash-es';
 storiesOf('WIP', module)
  .add('WebGL', function(){
     const options = {
-      ui: {
-        scheme: "clustal",
-        engine: "webgl",
-      },
+      engine: "webgl",
       sequences: [],
     };
     times(100, () => {

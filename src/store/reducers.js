@@ -12,23 +12,7 @@ import { combineReducers } from 'redux'
 
 import calculateSequencesState from './calculateSequencesState';
 
-const defaultViewpoint = {
-  width: -1,
-  height: -1,
-  tileFont: "",
-}
-
-// TODO: maybe combine with UI?
-const viewpoint = (state = defaultViewpoint, action) => {
-  switch(action.type){
-    case types.VIEWPOINT_UPDATE:
-      return action.viewpoint;
-    default:
-      return state;
-  }
-}
-
-const position = (state = {xPos: 0, yPos: 0}, action) => {
+const position = (state = {}, action) => {
   switch(action.type){
     case types.POSITION_UPDATE:
       return action.position;
@@ -37,22 +21,19 @@ const position = (state = {xPos: 0, yPos: 0}, action) => {
   }
 }
 
-const defaultUI = {
-  color: "red",
-  scheme: "clustal",
-  engine: "canvas",
-};
-
-const ui = (state = defaultUI, action) => {
+const props = (state = {}, action) => {
   switch(action.type){
-    case types.UI_UPDATE:
-      return action.ui;
+    case types.PROPS_UPDATE:
+      return {
+        ...state,
+        [action.key]: action.value,
+      };
     default:
       return state;
   }
 }
 
-const sequences = (state = {raw: []}, action) => {
+const sequences = (state = {}, action) => {
   switch(action.type){
     case types.SEQUENCES_UPDATE:
       return calculateSequencesState(action.sequences);
@@ -63,8 +44,7 @@ const sequences = (state = {raw: []}, action) => {
 
 export const reducers = combineReducers({
   position,
-  viewpoint,
-  ui,
+  props,
   sequences,
 });
 export default reducers;

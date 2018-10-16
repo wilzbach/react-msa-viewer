@@ -27,7 +27,7 @@ class PositionBarComponent extends Component {
   constructor(props) {
     super(props);
     this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.draw = throttle(this.draw, this.props.msecsPerFps);
   }
 
   componentDidMount() {
@@ -43,19 +43,17 @@ class PositionBarComponent extends Component {
     this.ctx.startDrawingFrame();
     this.ctx.font(this.props.font);
 
-    const tileWidth = this.props.viewpoint.tileWidth;
-    const tileHeight = this.props.viewpoint.tileHeight;
     const yPos = 0;
-    const startTile = Math.floor(this.props.position.xPos / tileWidth) - 1 + this.props.startIndex;
-    const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
-    let xPos = -this.props.position.xPos % tileWidth;
+    const startTile = Math.floor(this.props.position.xPos / this.props.tileWidth) - 1 + this.props.startIndex;
+    const tiles = Math.ceil(this.props.globalWidth / this.props.tileWidth) + 1;
+    let xPos = -this.props.position.xPos % this.props.tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
       if (i % this.props.markerSteps === 0) {
-        this.ctx.fillText(i, xPos, yPos, tileWidth, tileHeight);
+        this.ctx.fillText(i, xPos, yPos, this.props.tileWidth, this.props.tileHeight);
       } else {
-        this.ctx.fillText(".", xPos, yPos, tileWidth, tileHeight);
+        this.ctx.fillText(".", xPos, yPos, this.props.tileWidth, this.props.tileHeight);
       }
-      xPos += this.props.viewpoint.tileHeight;
+      xPos += this.props.tileHeight;
     }
     this.ctx.endDrawingFrame();
   }
@@ -68,7 +66,7 @@ class PositionBarComponent extends Component {
     return (
       <canvas
         ref={this.canvas}
-        width={this.props.viewpoint.width}
+        width={this.props.globalWidth}
         height={height}
 				style={style}
       />
@@ -111,6 +109,10 @@ const mapStateToProps = state => {
     position: state.position,
     viewpoint: state.viewpoint,
     maxLength: state.sequences.maxLength,
+    tileWidth: state.props.tileWidth,
+    tileHeight: state.props.tileHeight,
+    globalWidth: state.props.width,
+    msecsPerFps: state.props.msecsPerFps,
   }
 };
 

@@ -7,6 +7,5 @@
 */
 
 export const POSITION_UPDATE = 'POSITION_UPDATE';
-export const VIEWPOINT_UPDATE = 'VIEWPOINT_UPDATE';
-export const UI_UPDATE = 'UI_UPDATE';
+export const PROPS_UPDATE = 'PROPS_UPDATE';
 export const SEQUENCES_UPDATE = 'SEQUENCES_UPDATE';

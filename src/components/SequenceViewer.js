@@ -7,8 +7,8 @@
 */
 
 import msaConnect from '../store/connect'
-
 import { updatePosition } from '../store/actions'
+import PropTypes from 'prop-types';
 
 import { floor, clamp } from 'lodash-es';
 
@@ -27,12 +27,11 @@ class SequenceViewerComponent extends DraggingComponent {
    */
   drawScene() {
     // TODO: only update the scheme when it changed (maybe move i
-    this.scheme = schemes.getScheme(this.props.ui.scheme);
+    this.scheme = schemes.getScheme(this.props.colorScheme);
 
     const sequences = this.props.sequences.raw;
-    const viewpoint = this.props.viewpoint;
-    const tileWidth = viewpoint.tileWidth;
-    const tileHeight = viewpoint.tileHeight;
+    const tileWidth = this.props.tileWidth;
+    const tileHeight = this.props.tileHeight;
     const {xPos: xViewPos, yPos: yViewPos} = this.props.position;
     const xInitPos = -(xViewPos % tileWidth);
     let yPos = -(yViewPos % tileHeight);
@@ -44,7 +43,7 @@ class SequenceViewerComponent extends DraggingComponent {
       let j = clamp(floor(xViewPos / tileWidth), 0, sequence.length - 1);
       for (; j < sequence.length; j++) {
         const el = sequence[j];
-        this.ctx.font(this.props.viewpoint.tileFont);
+        this.ctx.font(this.props.tileFont);
         this.ctx.fillStyle(this.scheme.getColor(el));
         this.ctx.globalAlpha(0.7);
         this.ctx.fillRect(xPos, yPos, tileWidth, tileHeight);
@@ -53,11 +52,11 @@ class SequenceViewerComponent extends DraggingComponent {
         // TODO: center the font tile
         this.ctx.fillText(el, xPos, yPos, tileWidth, tileHeight);
         xPos += tileWidth;
-        if (xPos > viewpoint.width)
+        if (xPos > this.props.width)
             break;
       }
       yPos += tileHeight;
-      if (yPos > viewpoint.height)
+      if (yPos > this.props.height)
           break;
     }
   }
@@ -65,14 +64,13 @@ class SequenceViewerComponent extends DraggingComponent {
   onPositionUpdate(oldPos, newPos) {
     // TODO: move this into a redux action
     const pos = this.props.position;
-    const viewpoint = this.props.viewpoint;
     pos.xPos += oldPos[0] - newPos[0];
     pos.yPos += oldPos[1] - newPos[1];
     // TODO: need maximum of sequence lengths here
     const maximum = this.props.sequences.maxLength;
-    const maxWidth = maximum * viewpoint.tileWidth - viewpoint.width;
+    const maxWidth = maximum * this.props.tileWidth - this.props.width;
     pos.xPos = clamp(pos.xPos, 0, maxWidth);
-    const maxHeight = this.props.sequences.raw.length * viewpoint.tileHeight - viewpoint.height;
+    const maxHeight = this.props.sequences.raw.length * this.props.tileHeight - this.props.height;
     pos.yPos = clamp(pos.yPos, 0, maxHeight);
     this.props.updatePosition(pos);
   }
@@ -89,12 +87,29 @@ class SequenceViewerComponent extends DraggingComponent {
   //}
 }
 
+SequenceViewerComponent.defaultProps = {
+  showModBar: true,
+};
+
+SequenceViewerComponent.PropTypes = {
+  /**
+   * Show the custom ModBar
+   */
+  showModBar: PropTypes.boolean,
+};
+
 const mapStateToProps = state => {
   return {
     position: state.position,
-    viewpoint: state.viewpoint,
     sequences: state.sequences,
-    ui: state.ui,
+    width: state.props.width,
+    height: state.props.height,
+    tileWidth: state.props.tileWidth,
+    tileHeight: state.props.tileHeight,
+    tileFont: state.props.tileFont,
+    msecsPerFps: state.props.msecsPerFps,
+    colorScheme: state.props.colorScheme,
+    engine: state.props.engine,
   }
 }
 

@@ -7,11 +7,13 @@
 */
 
 import React, { Component } from 'react';
+import msaConnect from '../store/connect'
 import MSAProvider from '../store/provider';
 
 import {
+  msaDefaultProps,
+  MSAPropTypes,
   PropTypes,
-  SequencePropType,
 } from '../PropTypes';
 
 import PositionBar from './PositionBar';
@@ -45,7 +47,7 @@ class MSAViewerComponent extends Component {
     } else {
       // TODO: add more advanced layouts
       const currentState = msaStore.getState();
-      const labelsPadding = currentState.viewpoint.tileHeight;
+      const labelsPadding = currentState.props.tileHeight;
       const overviewBarHeight = 50;
       const labelsStyle = {
         paddingTop: labelsPadding + overviewBarHeight,
@@ -75,6 +77,8 @@ class MSAViewerComponent extends Component {
 
 const MSAViewer = propsToRedux(MSAViewerComponent);
 
+MSAViewer.defaultProps = msaDefaultProps;
+
 MSAViewer.PropTypes = {
   /**
    * A custom msaStore (created with `createMSAStore`).
@@ -82,18 +86,16 @@ MSAViewer.PropTypes = {
    */
   msaStore: PropTypes.object,
 
-  /**
-   * Sequence data.
-   */
-  sequences: PropTypes.arrayOf(SequencePropType),
+  ...MSAPropTypes
 };
 
-// TODO: re-include propsToRedux here?
 export default MSAViewer;
 export {
   createMSAStore,
+  msaConnect,
   Labels,
   MSAViewer,
+  MSAProvider,
   OverviewBar,
   PositionBar,
   SequenceOverview,

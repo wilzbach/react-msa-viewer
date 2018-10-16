@@ -24,7 +24,7 @@ class OverviewBarComponent extends Component {
   constructor(props) {
     super(props);
     this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.draw = throttle(this.draw, this.props.msecsPerFps);
     this.calculateStats();
   }
 
@@ -40,19 +40,19 @@ class OverviewBarComponent extends Component {
 
   draw() {
     this.ctx.startDrawingFrame();
-    this.ctx.font(this.props.viewpoint.positionFont);
+    //this.ctx.font(this.props.viewpoint.positionFont);
 
-    const tileWidth = this.props.viewpoint.tileWidth;
+    const tileWidth = this.props.tileWidth;
     const yPos = 0;
     const startTile = Math.floor(this.props.position.xPos / tileWidth);
-    const tiles = Math.ceil(this.props.viewpoint.width / tileWidth) + 1;
+    const tiles = Math.ceil(this.props.globalWidth / tileWidth) + 1;
     let xPos = -this.props.position.xPos % tileWidth;
     for (let i = startTile; i < (startTile + tiles); i++) {
 			let height = this.props.height * this.columnHeights[i];
 			const remainingHeight = this.props.height - height;
       this.ctx.fillStyle(this.props.fillColor);
       this.ctx.fillRect(xPos, yPos + remainingHeight, tileWidth, height);
-      xPos += this.props.viewpoint.tileWidth;
+      xPos += this.props.tileWidth;
     }
     this.ctx.endDrawingFrame();
   }
@@ -77,7 +77,7 @@ class OverviewBarComponent extends Component {
     return (
       <canvas
         ref={this.canvas}
-        width={this.props.viewpoint.width}
+        width={this.props.globalWidth}
         height={this.props.height}
       />
     );
@@ -96,7 +96,7 @@ OverviewBarComponent.PropTypes = {
    *  - `information-content`: Information entropy after Shannon of a column (scaled)
    *  - `conservation`: Conservation of a column (scaled)
    */
-  method: PropTypes.oneOf('information-content', 'conservation'),
+  method: PropTypes.oneOf(['information-content', 'conservation']),
 
   /**
    * Height of the OverviewBar (in pixels), e.g. `100`
@@ -113,7 +113,10 @@ const mapStateToProps = state => {
   return {
     sequences: state.sequences.raw,
     position: state.position,
-    viewpoint: state.viewpoint,
+    tileHeight: state.props.tileHeight,
+    tileWidth: state.props.tileWidth,
+    globalWidth: state.props.width,
+    msecsPerFps: state.props.msecsPerFps,
   }
 }
 

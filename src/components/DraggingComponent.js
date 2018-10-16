@@ -27,7 +27,7 @@ Sub-classes are expected to implement:
 
 Moreover, a component's viewpoint needs to be passed in via its properties:
 
-  <MyDraggingComponent viewpoint={width: 200, height: 300, msecsPerFps: 60} />
+  <MyDraggingComponent width="200" height="300" msecsPerFps="60" />
 */
 // TODO: handle wheel events
 // TODO: share requestAnimationFrame with multiple components
@@ -43,14 +43,11 @@ class DraggingComponent extends Component {
    */
 
   static defaultProps = {
-    viewpoint: {
-      width: 500,
-      height: 500,
-      msecsPerFps: 60,
-    },
-    ui: {
-      engine: "canvas",
-    },
+    width: 500,
+    height: 500,
+    msecsPerFps: 60,
+    engine: "canvas",
+    showModBar: true,
   }
 
   state = {
@@ -69,7 +66,7 @@ class DraggingComponent extends Component {
     //this.onTouchMove = throttle(this.onTouchMove, msecsPerFps);
 
     // just in case requestAnimationFrame is too greedy
-    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.draw = throttle(this.draw, this.props.msecsPerFps);
 
     this.onViewpointChange();
     this.mouseMovePosition = undefined;
@@ -99,7 +96,7 @@ class DraggingComponent extends Component {
 
   componentDidMount() {
     // choose the best engine
-    if (this.props.ui.engine === "webgl" && WebGL.isSupported(this.canvas.current)) {
+    if (this.props.engine === "webgl" && WebGL.isSupported(this.canvas.current)) {
       this.ctx = new WebGL(this.canvas.current);
     } else {
       this.ctx = new Canvas(this.canvas.current);
@@ -244,8 +241,8 @@ class DraggingComponent extends Component {
   isEventWithinComponent(e) {
     // TODO: cache width + height for the rel call
     const relPos = Mouse.rel(e);
-    return 0 <= relPos[0] && relPos[0] <= this.props.viewpoint.width &&
-           0 <= relPos[1] && relPos[1] <= this.props.viewpoint.height;
+    return 0 <= relPos[0] && relPos[0] <= this.props.width &&
+           0 <= relPos[1] && relPos[1] <= this.props.height;
   }
 
   componentDidUpdate() {
@@ -282,7 +279,7 @@ class DraggingComponent extends Component {
       right: 0,
       opacity: 0.8,
     };
-    const showModBar = this.state.mouse.isMouseWithin;
+    const showModBar = this.props.showModBar && this.state.mouse.isMouseWithin;
     return (
       <div
           style={style}
@@ -293,8 +290,8 @@ class DraggingComponent extends Component {
         )}
         <canvas
           ref={this.canvas}
-          width={this.props.viewpoint.width}
-          height={this.props.viewpoint.height}
+          width={this.props.width}
+          height={this.props.height}
         >
         Your browser does not seem to support HTML5 canvas.
         </canvas>

@@ -55,16 +55,12 @@ storiesOf('Basic', module)
   })
   .add('Big viewpoint', function(){
     const options = {
-      ui: {
-        scheme: "clustal",
-      },
       sequences: [],
-      viewpoint: {
-        height: number("height", 500),
-        width: number("width", 500),
-        tileHeight: number("tileHeight", 20),
-        tileWidth: number("tileWidth", 20),
-      }
+      height: number("height", 500),
+      width: number("width", 500),
+      tileHeight: number("tileHeight", 20),
+      tileWidth: number("tileWidth", 20),
+      colorScheme: "clustal",
     };
     times(100, () => {
       options.sequences.push({

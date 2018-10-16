@@ -16,14 +16,10 @@ export const updatePosition = view => ({
   }
 });
 
-export const updateViewpoint = data => ({
-  type: types.VIEWPOINT_UPDATE,
-  viewpoint: data,
-});
-
-export const updateUI = data => ({
-  type: types.UI_UPDATE,
-  ui: data,
+export const updateProps = data => ({
+  type: types.PROPS_UPDATE,
+  key: data.key,
+  value: data.value,
 });
 
 export const updateSequences = data => ({

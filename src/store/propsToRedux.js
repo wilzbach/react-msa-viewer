@@ -16,6 +16,8 @@ import React, { Component } from 'react';
 import createMSAStore from './createMSAStore';
 import * as actions from './actions';
 
+import {MSAPropTypes} from '../PropTypes';
+
 import {
   isEqual,
   omit,
@@ -26,9 +28,13 @@ import {
 const reduxActions = {
   "position": "updatePosition",
   "sequences": "updateSequences",
-  "ui": "updateUI",
-  "viewpoint": "updateViewpoint",
 }
+
+Object.keys(MSAPropTypes).forEach(key => {
+  if(!(key in reduxActions)) {
+    reduxActions[key] = 'updateProps';
+  }
+});
 
 const attributesToStore = Object.keys(reduxActions);
 
@@ -50,10 +56,21 @@ export const propsToRedux = (WrappedComponent) => {
     // Notify the internal Redux store about property updates
     componentDidUpdate(oldProps) {
       const newProps = this.props;
+      // TODO: support batch updates
       for (const prop in pick(newProps, attributesToStore)) {
         if (!isEqual(oldProps[prop], newProps[prop])) {
           if (prop in reduxActions) {
-            const action = actions[reduxActions[prop]](newProps[prop]);
+            let action;
+            switch(reduxActions[prop]){
+              case 'updateProps':
+                action = actions[reduxActions[prop]]({
+                  key: prop,
+                  value: newProps[prop],
+                });
+                break;
+              default:
+                action = actions[reduxActions[prop]](newProps[prop]);
+            }
             this.msaStore.dispatch(action);
           } else {
             console.error(prop, " is unknown.");

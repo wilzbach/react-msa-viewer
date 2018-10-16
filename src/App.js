@@ -42,9 +42,7 @@ class App extends Component {
           sequence: "MEEPQ---SISE-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE---LSENVAGWLEDP"
         },
       ],
-      ui: {
-        scheme: "clustal",
-      }
+      colorScheme: "clustal",
     };
     return (
       <div>

@@ -26,7 +26,7 @@ class LabelsComponent extends Component {
   constructor(props) {
     super(props);
     this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.draw = throttle(this.draw, this.props.msecsPerFps);
   }
 
   componentDidMount() {
@@ -39,7 +39,6 @@ class LabelsComponent extends Component {
   }
 
   draw() {
-    const tileHeight = this.props.viewpoint.tileHeight;
     this.ctx.startDrawingFrame();
     let xPos = 0;
     let yPos = -this.props.position.yPos + 3;
@@ -51,8 +50,8 @@ class LabelsComponent extends Component {
       } else {
         label = "Sequence " + i;
       }
-      this.ctx.fillText(label, xPos, yPos, this.props.width, tileHeight);
-      yPos += tileHeight;
+      this.ctx.fillText(label, xPos, yPos, this.props.width, this.props.tileHeight);
+      yPos += this.props.tileHeight;
     }
     this.ctx.endDrawingFrame();
   }
@@ -63,7 +62,7 @@ class LabelsComponent extends Component {
         <canvas
           ref={this.canvas}
           width={this.props.width}
-          height={this.props.viewpoint.height}
+          height={this.props.globalHeight}
         >
         </canvas>
       </div>
@@ -86,7 +85,9 @@ LabelsComponent.PropTypes = {
 const mapStateToProps = state => {
   return {
     position: state.position,
-    viewpoint: state.viewpoint,
+    globalHeight: state.props.height,
+    tileHeight: state.props.tileHeight,
+    msecsPerFps: state.props.msecsPerFps,
     nrSequences: state.sequences.raw.length,
     labels: state.sequences.raw.map(s => s.name),
   }

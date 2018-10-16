@@ -23,7 +23,7 @@ class SequenceOverviewComponent extends Component {
   constructor(props) {
     super(props);
     this.canvas = createRef();
-    this.draw = throttle(this.draw, this.props.viewpoint.msecsPerFps);
+    this.draw = throttle(this.draw, this.props.msecsPerFps);
   }
 
   componentDidMount() {
@@ -40,7 +40,7 @@ class SequenceOverviewComponent extends Component {
     this.ctx.startDrawingFrame();
     this.ctx.save();
     // TODO: only update the scheme when it changed
-    this.scheme = schemes.getScheme(this.props.ui.scheme);
+    this.scheme = schemes.getScheme(this.props.colorScheme);
     this.drawScene();
     this.ctx.restore();
     this.ctx.endDrawingFrame();
@@ -48,17 +48,15 @@ class SequenceOverviewComponent extends Component {
 
   drawScene() {
     this.scene = {};
-    this.scene.viewpoint = this.props.viewpoint;
     ({xPos: this.scene.xViewPos, yPos: this.scene.yViewPos} = this.props.position);
-    this.scene.xScalingFactor = 1 / this.props.viewpoint.tileWidth * this.props.tileWidth;
-    this.scene.yScalingFactor = 1 / this.props.viewpoint.tileHeight * this.props.tileHeight;
+    this.scene.xScalingFactor = 1 / this.props.globalTileWidth * this.props.tileWidth;
+    this.scene.yScalingFactor = 1 / this.props.globalTileHeight * this.props.tileHeight;
     this.drawCurrentViewpoint();
     this.drawSequences();
   }
 
   drawSequences() {
     const {
-      viewpoint,
       xViewPos, xScalingFactor,
     } = this.scene;
     const sequences = this.props.sequences.raw;
@@ -81,11 +79,11 @@ class SequenceOverviewComponent extends Component {
         this.ctx.globalAlpha(0.5);
         this.ctx.fillRect(xPos, yPos, this.props.tileWidth, this.props.tileHeight);
         xPos += this.props.tileWidth;
-        if (xPos > viewpoint.width)
+        if (xPos > this.props.globalWidth)
             break;
       }
       yPos += this.props.tileHeight;
-      if (yPos > viewpoint.height)
+      if (yPos > this.props.height)
           break;
     }
   }
@@ -93,7 +91,6 @@ class SequenceOverviewComponent extends Component {
   drawCurrentViewpoint() {
     // currently selected area
     const {
-      viewpoint,
       xViewPos, xScalingFactor,
       yViewPos, yScalingFactor,
     } = this.scene;
@@ -101,8 +98,8 @@ class SequenceOverviewComponent extends Component {
     this.ctx.fillRect(
       xViewPos * xScalingFactor,
       yViewPos * yScalingFactor,
-      viewpoint.width  * xScalingFactor,
-      viewpoint.height * yScalingFactor,
+      this.props.globalWidth  * xScalingFactor,
+      this.props.globalHeight * yScalingFactor,
     );
   }
 
@@ -113,7 +110,7 @@ class SequenceOverviewComponent extends Component {
     return (
       <canvas
         ref={this.canvas}
-        width={this.props.viewpoint.width}
+        width={this.props.globalWidth}
         height={this.props.height}
         style={style}
       />
@@ -150,6 +147,12 @@ const mapStateToProps = state => {
     viewpoint: state.viewpoint,
     ui: state.ui,
     sequences: state.sequences,
+    globalWidth: state.props.width,
+    globalHeight: state.props.height,
+    msecsPerFps: state.props.msecsPerFps,
+    globalTileWidth: state.props.tileWidth,
+    globalTileHeight: state.props.tileHeight,
+    colorScheme: state.props.colorScheme,
   }
 }
 

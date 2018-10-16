@@ -21,12 +21,8 @@ storiesOf('Customization', module)
       "zappo",
     ];
     const options = {
-      ui: {
-        scheme: select("Colorscheme", colorschemes, "zappo"),
-      },
-      viewpoint: {
-        height: 60,
-      },
+      colorScheme: select("Colorscheme", colorschemes, "zappo"),
+      height: 60,
       sequences: [
         {
           name: "seq.1",

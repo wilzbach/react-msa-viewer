@@ -25,10 +25,14 @@ The default properties from MSAViewer.defaultProps are used.
 */
 export const createMSAStore = (props) => {
   PropTypes.checkPropTypes(MSAPropTypes, props, 'prop', 'MSAViewer');
-  props = merge(msaDefaultProps, props);
-  // move sequences in its own sub-object
-  props.sequences = calculateSequencesState(props.sequences);
-  return createStore(positionReducers, props);
+  const propsWithDefaultValues = merge(msaDefaultProps, props);
+  const {sequences, position, ...otherProps} = propsWithDefaultValues;
+  const customProps = {
+    props: otherProps,
+    position,
+    sequences: calculateSequencesState(props.sequences),
+  };
+  return createStore(positionReducers, customProps);
 }
 
 export default createMSAStore;
