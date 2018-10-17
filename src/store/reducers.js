@@ -11,6 +11,7 @@ import * as types from './actionTypes'
 import { combineReducers } from 'redux'
 
 import calculateSequencesState from './calculateSequencesState';
+import {ColorScheme, isColorScheme} from '../utils/ColorScheme';
 
 const position = (state = {}, action) => {
   switch(action.type){
@@ -21,14 +22,29 @@ const position = (state = {}, action) => {
   }
 }
 
+function checkColorScheme(state) {
+  if (isColorScheme(state.colorScheme)) {
+      // it's already a color scheme
+    } else {
+      state.colorScheme = new ColorScheme(state.colorScheme);
+  }
+}
+
 const props = (state = {}, action) => {
   switch(action.type){
     case types.PROPS_UPDATE:
-      return {
+      state = {
         ...state,
-        [action.key]: action.value,
+        [action.key]: action.value
       };
+      if (action.key === "colorScheme") {
+        checkColorScheme(state);
+      }
+      return state;
     default:
+      if (state.colorScheme !== undefined) {
+        checkColorScheme(state);
+      }
       return state;
   }
 }

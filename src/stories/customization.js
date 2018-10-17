@@ -11,6 +11,21 @@ import { storiesOf } from '@storybook/react';
 import { MSAViewer } from '../lib';
 import { select } from '@storybook/addon-knobs';
 
+const sequences = [
+  {
+    name: "seq.1",
+    sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+  },
+  {
+    name: "seq.2",
+    sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+  },
+  {
+    name: "seq.3",
+    sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+  },
+];
+
 storiesOf('Customization', module)
   .add('Colorschemes', function(){
     // see https://github.com/wilzbach/msa-colorschemes for now
@@ -23,24 +38,35 @@ storiesOf('Customization', module)
     const options = {
       colorScheme: select("Colorscheme", colorschemes, "zappo"),
       height: 60,
-      sequences: [
-        {
-          name: "seq.1",
-          sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
-        },
-        {
-          name: "seq.2",
-          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-        },
-        {
-          name: "seq.3",
-          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-        },
-      ],
+      sequences,
     };
     return (
     <MSAViewer {...options} >
     </MSAViewer>
     )
   })
+  .add('Custom ColorScheme', function(){
+    // see https://github.com/wilzbach/msa-colorschemes for now
+    const myColorMap = {
+      "M": "blue",
+      "E": "red",
+      "T": "green",
+    }
+    class MyColorScheme  {
+      getColor(element) {
+        return element in myColorMap ? myColorMap[element] : "grey";
+      }
+    }
+    const myColorScheme = new MyColorScheme();
+    const options = {
+      colorScheme: myColorScheme,
+      height: 60,
+      sequences,
+    };
+    return (
+    <MSAViewer {...options} >
+    </MSAViewer>
+    )
+  })
+ ;
  ;

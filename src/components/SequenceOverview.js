@@ -13,14 +13,10 @@ import msaConnect from '../store/connect'
 
 import { floor, clamp } from 'lodash-es';
 
-const schemes = new (require('msa-colorschemes'))();
-
 class SequenceOverviewComponent extends CanvasComponent {
 
   draw = () => {
     // TODO: only update this if required
-    // TODO: only update the scheme when it changed
-    this.scheme = schemes.getScheme(this.props.colorScheme);
     this.drawScene();
   }
 
@@ -53,7 +49,7 @@ class SequenceOverviewComponent extends CanvasComponent {
       j = 0;
       for (; j < sequence.length; j++) {
         const el = sequence[j];
-        this.ctx.fillStyle(this.scheme.getColor(el));
+        this.ctx.fillStyle(this.props.colorScheme.getColor(el));
         this.ctx.globalAlpha(0.5);
         this.ctx.fillRect(xPos, yPos, this.props.tileWidth, this.props.tileHeight);
         xPos += this.props.tileWidth;

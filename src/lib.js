@@ -10,6 +10,7 @@ import msaConnect from './store/connect'
 import createMSAStore from './store/createMSAStore';
 import MSAProvider from './store/provider';
 
+import ColorScheme from './utils/ColorScheme';
 import Labels from './components/Labels';
 import MSAViewer from './components/MSAViewer';
 import PositionBar from './components/PositionBar';
@@ -18,6 +19,7 @@ import SequenceOverview from './components/SequenceOverview';
 import OverviewBar from './components/OverviewBar';
 
 export {
+  ColorScheme,
   createMSAStore,
   msaConnect,
   Labels,

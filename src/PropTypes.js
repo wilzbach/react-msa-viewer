@@ -8,6 +8,8 @@
 
 import PropTypes from 'prop-types';
 
+import {ColorScheme, isColorScheme} from './utils/ColorScheme';
+
 /**
  * Definition of a single sequence object.
  *   name: label or id of the sequence (doesn't need to be unique)
@@ -25,7 +27,20 @@ export const AllowedColorschemes = [
   "strand_propensity", "taylor", "turn_propensity", "zappo",
 ];
 
-export const ColorSchemePropType = PropTypes.oneOf(AllowedColorschemes);
+export const ColorSchemePropType = PropTypes.oneOfType([
+  PropTypes.oneOf(AllowedColorschemes),
+  PropTypes.instanceOf(ColorScheme),
+  function isColorSchemeObject(props, propName, componentName) {
+    if (isColorScheme(props[propName])) {
+      // is a child of ColorScheme
+    } else {
+      return new Error(
+        'Invalid prop `' + propName + '` supplied to' +
+        ' `' + componentName + '`. Validation failed.'
+      );
+    }
+  }
+]);
 
 export const PositionPropType = PropTypes.shape({
   xPos: PropTypes.number,

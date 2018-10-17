@@ -15,8 +15,6 @@ import { floor, clamp } from 'lodash-es';
 import DraggingComponent from './DraggingComponent';
 
 // TODO: maybe move into the store
-const schemes = new (require('msa-colorschemes'))();
-
 class SequenceViewerComponent extends DraggingComponent {
 
   static fps = 120;
@@ -26,9 +24,6 @@ class SequenceViewerComponent extends DraggingComponent {
    * Called on every sequence movement.
    */
   drawScene() {
-    // TODO: only update the scheme when it changed (maybe move i
-    this.scheme = schemes.getScheme(this.props.colorScheme);
-
     const sequences = this.props.sequences.raw;
     const tileWidth = this.props.tileWidth;
     const tileHeight = this.props.tileHeight;
@@ -44,7 +39,7 @@ class SequenceViewerComponent extends DraggingComponent {
       for (; j < sequence.length; j++) {
         const el = sequence[j];
         this.ctx.font(this.props.tileFont);
-        this.ctx.fillStyle(this.scheme.getColor(el));
+        this.ctx.fillStyle(this.props.colorScheme.getColor(el));
         this.ctx.globalAlpha(0.7);
         this.ctx.fillRect(xPos, yPos, tileWidth, tileHeight);
         this.ctx.fillStyle("#000000");
