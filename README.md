@@ -128,21 +128,21 @@ However, it can be used in Vanilla JS:
   <div id="my-msa" />
   <script>
   var options = {
-      sequences: [
-        {
-          name: "seq.1",
-          sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
-        },
-        {
-          name: "seq.2",
-          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-        },
-        {
-          name: "seq.3",
-          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-        },
-      ],
-      height: 60,
+    sequences: [
+      {
+        name: "seq.1",
+        sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+      },
+      {
+        name: "seq.2",
+        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+      },
+      {
+        name: "seq.3",
+        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+      },
+    ],
+    height: 60,
     colorScheme: "zappo",
    };
   ReactDOM.render(
