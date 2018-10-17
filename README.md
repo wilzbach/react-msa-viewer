@@ -65,43 +65,43 @@ yarn add @plotly/react-msa-viewer
 
 ### Usage in Vanilla JS
 
-Using the `react-msa-viewer` withinReact is highly recommended.
+Using the `react-msa-viewer` with in React is highly recommended.
 However, it can be used in Vanilla JS:
 
-```
+```html
 <html>
-	<meta charset="utf-8" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
+<meta charset="utf-8" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.5.2/prop-types.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.4.2/react-dom.min.js"></script>
-	<script src="https://unpkg.com/@plotly/react-msa-viewer/dist/index.js"></script>
-	<body>
-		<div id="my-msa" />
-		<script>
-		var options = {
-		    sequences: [
-		      {
-		        name: "seq.1",
-		        sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
-		      },
-		      {
-		        name: "seq.2",
-		        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-		      },
-		      {
-		        name: "seq.3",
-		        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
-		      },
-		    ],
-		    height: 60,
-			colorScheme: "zappo",
-		 };
-		ReactDOM.render(
-		  React.createElement(ReactMSAViewer.MSAViewer, options),
-		  document.getElementById('my-msa')
-		);
-		</script>
-	</body>
+<script src="https://unpkg.com/@plotly/react-msa-viewer/dist/index.js"></script>
+<body>
+  <div id="my-msa" />
+  <script>
+  var options = {
+      sequences: [
+        {
+          name: "seq.1",
+          sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+        },
+        {
+          name: "seq.2",
+          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+        },
+        {
+          name: "seq.3",
+          sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+        },
+      ],
+      height: 60,
+    colorScheme: "zappo",
+   };
+  ReactDOM.render(
+    React.createElement(ReactMSAViewer.MSAViewer, options),
+    document.getElementById('my-msa')
+  );
+  </script>
+</body>
 </html>
 ```
 
