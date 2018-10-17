@@ -270,8 +270,9 @@ class DraggingComponent extends Component {
   render() {
     // TODO: adapt to parent height/width
     const style = {
+      width: this.props.width,
+      ...this.props.style,
       cursor: this.state.mouse.cursorState,
-      display: "block",
       position: "relative",
     };
     const modBar = {

@@ -21,7 +21,7 @@ Checkout the storybook at https://msa.bio.sh
 Getting started
 ---------------
 
-```js
+```jsx
 import MSAViewer from '@plotly/react-msa-viewer';
 
 function MSA() {
@@ -61,6 +61,55 @@ For [yarn](https://yarnpkg.com/en) users, run:
 
 ```
 yarn add @plotly/react-msa-viewer
+```
+
+### Use your own layout
+
+`<MSAViewer>` acts a Context Provider for all MSA subcomponents.
+Hence, it will automatically take care of synchronization between all MSA components in its tree:
+
+```jsx
+import {
+  Labels,
+  OverviewBar,
+  PositionBar,
+  SequenceOverview,
+  SequenceViewer,
+} from '@plotly/react-msa-viewer';
+
+function MSA() {
+  const options = {
+    sequences: [
+      {
+        name: "seq.1",
+        sequence: "MEEPQSDPSIEP-PLSQETFSDLWKLLPENNVLSPLPS-QA-VDDLMLSPDDLAQWLTED"
+      },
+      {
+        name: "seq.2",
+        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+      },
+      {
+        name: "seq.3",
+        sequence: "MEEPQSDLSIEL-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE-LFLSENVAGWLEDP"
+      },
+    ],
+    height: 60,
+  };
+  return (
+    <MSAViewer sequences={sequences}>
+      <SequenceOverview method="information-content"/>
+      <div style={{display: "flex"}} >
+        <div>
+          <SequenceViewer/>
+          <br/>
+          <OverviewBar/>
+          <PositionBar/>
+        </div>
+        <Labels/>
+      </div>
+    </MSAViewer>
+  );
+}
 ```
 
 ### Usage in Vanilla JS
@@ -300,12 +349,66 @@ defaultValue: `5`
 ### `SequenceViewer` (component)
 
 
-
 #### Props
 
 ##### `showModBar`
 
 defaultValue: `true`
+
+### Creating your own MSA components
+
+The React MSA Viewer uses an Redux store internally.
+You can connect your components with it too.
+
+```jsx
+import React, {Component} from 'react';
+import msaConnect from 'react-msa-viewer';
+
+class MyFirstMSAPluginComponent extends Component {
+
+  render() {
+    return (
+      <div>
+        x: {this.props.xPos},
+        y: {this.props.yPos}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    xPos: state.position.xPos,
+    yPos: state.position.yPos,
+  }
+}
+
+export default msaConnect(
+  mapStateToProps,
+)(MyFirstMSAPluginComponent);
+```
+
+And then use your plugin in your App:
+
+```js
+import {
+  MSAViewer,
+  SequenceViewer,
+} from 'react-msa-viewer';
+
+import MyFirstMSAPlugin from './MyFirstMSAPlugin'
+
+function MyApp() {
+  return (
+    <MSAViewer sequences={sequences} height={60}>
+      <SequenceViewer />
+      <MyFirstMSA />
+    </MSAViewer>
+  );
+}
+```
+
+Alternatively, you can also listen to events.
 
 Development
 -----------
