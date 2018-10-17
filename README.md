@@ -105,6 +105,8 @@ However, it can be used in Vanilla JS:
 </html>
 ```
 
+See an [example on CodePen](https://codepen.io/greenify/pen/xyYaWN).
+
 Props
 -----
 
