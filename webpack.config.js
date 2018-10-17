@@ -3,14 +3,14 @@ const path = require('path');
 
 const config = {
   entry: {
-    index: ['./src/components/MSAViewer.js'],
+    index: ['./src/lib.js'],
   },
   devtool: 'eval-source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: 'react-msa-viewer',
+    library: 'ReactMSAViewer',
   },
   externals: {
     react: {
@@ -18,6 +18,12 @@ const config = {
       commonjs2: 'react',
       commonjs: 'react',
       amd: 'react',
+    },
+    'react-dom': {
+      root: 'ReactDom',
+      commonjs2: 'react-dom',
+      commonjs: 'react-dom',
+      amd: 'react-dom',
     },
     'prop-types': {
       root: 'PropTypes',
