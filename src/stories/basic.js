@@ -49,8 +49,7 @@ storiesOf('Basic', module)
       sequences,
     };
     return (
-    <MSAViewer {...options} >
-    </MSAViewer>
+      <MSAViewer {...options} />
     )
   })
   .add('Big viewpoint', function(){
@@ -69,8 +68,7 @@ storiesOf('Basic', module)
       });
     });
     return (
-    <MSAViewer {...options} >
-    </MSAViewer>
+      <MSAViewer {...options} />
     )
   })
 ;

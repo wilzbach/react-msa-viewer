@@ -25,7 +25,7 @@ The default properties from MSAViewer.defaultProps are used.
 */
 export const createMSAStore = (props) => {
   PropTypes.checkPropTypes(MSAPropTypes, props, 'prop', 'MSAViewer');
-  const propsWithDefaultValues = merge(msaDefaultProps, props);
+  const propsWithDefaultValues = merge({}, msaDefaultProps, props);
   const {sequences, position, ...otherProps} = propsWithDefaultValues;
   const customProps = {
     props: otherProps,

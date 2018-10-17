@@ -82,7 +82,7 @@ export const propsToRedux = (WrappedComponent) => {
     render() {
       const {msaStore, ...props} = omit(this.props, attributesToStore);
       if (this.msaStore === undefined) {
-        return (<div> error... </div>)
+        return (<div> Error initializing the MSAViewer. </div>)
       } else {
         return (
           <WrappedComponent msaStore={msaStore || this.msaStore} {...props} />
