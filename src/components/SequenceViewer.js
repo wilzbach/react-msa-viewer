@@ -10,7 +10,11 @@ import msaConnect from '../store/connect'
 import { updatePosition } from '../store/actions'
 import PropTypes from 'prop-types';
 
-import { floor, clamp } from 'lodash-es';
+import {
+  floor,
+  clamp,
+  isEqual,
+} from 'lodash-es';
 
 import DraggingComponent from './DraggingComponent';
 
@@ -104,17 +108,55 @@ class SequenceViewerComponent extends DraggingComponent {
     this.draw();
   }
 
+  // TODO: move into the redux store
+  /**
+   * Only fire an event if its value has changed.
+   */
+  fireEvent(eventName, e) {
+  }
+
+  /**
+   * Returns the position of the mouse position relative to the sequences
+   */
+  currentPointerPosition(e) {
+    const [x, y] = Mouse.rel(e);
+    return this.positionToSequence({
+      xPos: x,
+      yPos: y,
+    });
+  }
+
+  /**
+   * Only sends an event if the actual function is set.
+   */
+  sendEvent(name, data) {
+    if (this.props[name] !== undefined) {
+      this.props[name](data);
+    }
+  }
+
   onMouseMove = (e) => {
     if (typeof this.dragFrame === "undefined") {
-      const [x, y] = Mouse.rel(e);
-      if (this.props.onResidueMouseEnter !== undefined) {
-        this.props.onResidueMouseEnter(this.positionToSequence({
-          xPos: x,
-          yPos: y,
-        }));
+      if (this.props.onResidueMouseEnter !== undefined ||
+          this.props.onResidueMouseLeave !== undefined) {
+        const eventData = this.currentPointerPosition(e);
+        const lastValue = this.currentMouseSequencePosition;
+        if (!isEqual(lastValue, eventData)) {
+          if (lastValue !== undefined) {
+            this.sendEvent('onResidueMouseLeave', lastValue);
+          }
+          this.currentMouseSequencePosition = eventData;
+          this.sendEvent('onResidueMouseEnter', eventData);
+        }
       }
     }
     super.onMouseMove(e);
+  }
+
+  onMouseLeave = (e) => {
+    this.sendEvent('onResidueMouseLeave', this.currentMouseSequencePosition);
+    this.currentMouseSequencePosition = undefined;
+    super.onMouseLeave(e);
   }
 
   //shouldComponentUpdate(newProps) {
@@ -161,11 +203,20 @@ SequenceViewerComponent.PropTypes = {
 };
 
 const mapStateToProps = state => {
+  // Fallback to a smaller size if the given area is too large
+  const width = Math.min(
+    state.props.width,
+    state.sequences.maxLength * state.props.tileWidth
+  );
+  const height = Math.min(
+    state.props.height,
+    state.sequences.length * state.props.tileHeight
+  );
   return {
     position: state.position,
     sequences: state.sequences,
-    width: state.props.width,
-    height: state.props.height,
+    width,
+    height,
     tileWidth: state.props.tileWidth,
     tileHeight: state.props.tileHeight,
     tileFont: state.props.tileFont,

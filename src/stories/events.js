@@ -42,7 +42,10 @@ const storyAction = (name) => {
 storiesOf('Events', module)
   .add('onResidue', () => (
     <MSAViewer sequences={sequences} >
-      <SequenceViewer onResidueMouseEnter={storyAction('onResidueMouseEnter')} />
+      <SequenceViewer
+        onResidueMouseEnter={storyAction('onResidueMouseEnter')}
+        onResidueMouseLeave={storyAction('onResidueMouseLeave')}
+      />
     </MSAViewer>
   ))
 ;
