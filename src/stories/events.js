@@ -45,6 +45,8 @@ storiesOf('Events', module)
       <SequenceViewer
         onResidueMouseEnter={storyAction('onResidueMouseEnter')}
         onResidueMouseLeave={storyAction('onResidueMouseLeave')}
+        onResidueClick={storyAction('onResidueClick')}
+        onResidueDoubleClick={storyAction('onResidueDoubleClick')}
       />
     </MSAViewer>
   ))

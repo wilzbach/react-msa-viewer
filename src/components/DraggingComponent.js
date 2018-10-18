@@ -64,7 +64,8 @@ class DraggingComponent extends Component {
 
     // bind events (can't use static properties due to inheritance)
     ["onMouseEnter", "onMouseLeave", "onMouseDown", "onMouseUp", "onMouseMove",
-      "onTouchStart", "onTouchMove", "onTouchEnd", "onTouchCancel", "onClick",
+      "onTouchStart", "onTouchMove", "onTouchEnd", "onTouchCancel",
+      "onClick", "onDoubleClick",
       "draw",
     ].forEach(prop => {
         this[prop] = this[prop].bind(this);
@@ -122,6 +123,7 @@ class DraggingComponent extends Component {
     this.canvas.current.addEventListener('touchend', this.onTouchEnd);
     this.canvas.current.addEventListener('touchcancel', this.onTouchCancel);
     this.canvas.current.addEventListener('click', this.onClick);
+    this.canvas.current.addEventListener('dblclick', this.onDoubleClick);
     // TODO: should we react do window resizes dynamically?
     //window.addEventListener('resize', this.onResize)
   }
@@ -147,7 +149,17 @@ class DraggingComponent extends Component {
   }
   */
 
+  /**
+   * To be implemented by its childs.
+   */
   onClick(e) {
+
+  }
+
+  /**
+   * To be implemented by its childs.
+   */
+  onDoubleClick(e) {
 
   }
 
@@ -281,6 +293,7 @@ class DraggingComponent extends Component {
     this.canvas.current.removeEventListener('mousedown', this.onMouseDown);
     this.canvas.current.removeEventListener('mousemove', this.onMouseMove);
     this.canvas.current.removeEventListener('click', this.onClick);
+    this.canvas.current.removeEventListener('dblclick', this.onDoubleClick);
     this.canvas.current.removeEventListener('touchstart', this.onTouchStart);
     this.canvas.current.removeEventListener('touchend', this.onTouchEnd);
     this.canvas.current.removeEventListener('touchcancel', this.onTouchCancel);

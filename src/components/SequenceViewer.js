@@ -159,6 +159,18 @@ class SequenceViewerComponent extends DraggingComponent {
     super.onMouseLeave(e);
   }
 
+  onClick = (e) => {
+    const eventData = this.currentPointerPosition(e);
+    this.sendEvent('onResidueClick', eventData);
+    super.onClick(e);
+  }
+
+  onDoubleClick = (e) => {
+    const eventData = this.currentPointerPosition(e);
+    this.sendEvent('onResidueDoubleClick', eventData);
+    super.onDoubleClick(e);
+  }
+
   //shouldComponentUpdate(newProps) {
     //// TODO: check recursively
     ////return this.props.target !== newProps.target;
@@ -194,12 +206,12 @@ SequenceViewerComponent.PropTypes = {
   /**
    * Callback fired when the mouse pointer clicked a residue.
    */
-  onResidueMouseClick: PropTypes.func,
+  onResidueClick: PropTypes.func,
 
   /**
    * Callback fired when the mouse pointer clicked a residue.
    */
-  onResidueMouseDoubleClick: PropTypes.func,
+  onResidueDoubleClick: PropTypes.func,
 };
 
 const mapStateToProps = state => {

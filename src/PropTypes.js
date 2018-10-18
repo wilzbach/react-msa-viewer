@@ -144,12 +144,12 @@ export const MSAPropTypes = {
   /**
    * Callback fired when the mouse pointer clicked a residue.
    */
-  onResidueMouseClick: PropTypes.func,
+  onResidueClick: PropTypes.func,
 
   /**
    * Callback fired when the mouse pointer clicked a residue.
    */
-  onResidueMouseDoubleClick: PropTypes.func,
+  onResidueDoubleClick: PropTypes.func,
 };
 
 
