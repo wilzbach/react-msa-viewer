@@ -16,11 +16,12 @@ import React, { Component } from 'react';
 import createMSAStore from './createMSAStore';
 import * as actions from './actions';
 
-import {MSAPropTypes} from '../PropTypes';
+import {MSAPropTypes, PropTypes} from '../PropTypes';
 
 import {
   isEqual,
   pick,
+  omit,
 } from 'lodash-es';
 
 /// Maps property changes to redux actions
@@ -30,7 +31,7 @@ const reduxActions = {
 }
 
 Object.keys(MSAPropTypes).forEach(key => {
-  if(!(key in reduxActions)) {
+  if(!(key in reduxActions) && MSAPropTypes[key] !== PropTypes.func) {
     reduxActions[key] = 'updateProps';
   }
 });
@@ -79,7 +80,7 @@ export const propsToRedux = (WrappedComponent) => {
     }
 
     render() {
-      const {msaStore, ...props} = this.props;
+      const {msaStore, ...props} = omit(this.props, attributesToStore);
       if (this.msaStore === undefined) {
         return (<div> Error initializing the MSAViewer. </div>)
       } else {
