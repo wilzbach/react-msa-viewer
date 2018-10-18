@@ -130,6 +130,26 @@ export const MSAPropTypes = {
    * Rendering engine: `canvas` or `webgl` (experimental).
    */
   engine: PropTypes.oneOf(['canvas', 'webl']), // experimental
+
+  /**
+   * Callback fired when the mouse pointer is entering a residue.
+   */
+  onResidueMouseEnter: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer is leaving a residue.
+   */
+  onResidueMouseLeave: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer clicked a residue.
+   */
+  onResidueMouseClick: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer clicked a residue.
+   */
+  onResidueMouseDoubleClick: PropTypes.func,
 };
 
 

@@ -10,7 +10,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { MSAViewer } from '../lib';
 import { times } from 'lodash-es';
-import { select, number } from '@storybook/addon-knobs';
+import { select, number, withKnobs } from '@storybook/addon-knobs';
 
 const sequences = [
   {
@@ -52,6 +52,7 @@ storiesOf('Basic', module)
       <MSAViewer {...options} />
     )
   })
+  .addDecorator(withKnobs)
   .add('Big viewpoint', function(){
     const options = {
       sequences: [],

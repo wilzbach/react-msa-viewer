@@ -1,8 +1,5 @@
 import { configure, addDecorator } from '@storybook/react';
 import { setOptions } from '@storybook/addon-options';
-import { withKnobs } from '@storybook/addon-knobs';
-
-addDecorator(withKnobs);
 
 function loadStories() {
   require('../src/stories');

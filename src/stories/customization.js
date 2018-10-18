@@ -9,7 +9,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { MSAViewer } from '../lib';
-import { select } from '@storybook/addon-knobs';
+import { select, withKnobs } from '@storybook/addon-knobs';
 
 const sequences = [
   {
@@ -27,6 +27,7 @@ const sequences = [
 ];
 
 storiesOf('Customization', module)
+  .addDecorator(withKnobs)
   .add('Colorschemes', function(){
     // see https://github.com/wilzbach/msa-colorschemes for now
     const colorschemes = [

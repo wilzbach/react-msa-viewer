@@ -9,5 +9,6 @@
 import './basic'
 import './customization'
 import './layouts'
+import './events'
 import './plugins'
 import './wip'

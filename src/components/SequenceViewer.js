@@ -14,10 +14,10 @@ import { floor, clamp } from 'lodash-es';
 
 import DraggingComponent from './DraggingComponent';
 
+import Mouse from '../utils/mouse';
+
 // TODO: maybe move into the store
 class SequenceViewerComponent extends DraggingComponent {
-
-  static fps = 120;
 
   /**
    * Draws the currently visible sequences.
@@ -27,15 +27,13 @@ class SequenceViewerComponent extends DraggingComponent {
     const sequences = this.props.sequences.raw;
     const tileWidth = this.props.tileWidth;
     const tileHeight = this.props.tileHeight;
-    const {xPos: xViewPos, yPos: yViewPos} = this.props.position;
-    const xInitPos = -(xViewPos % tileWidth);
-    let yPos = -(yViewPos % tileHeight);
-    // TODO: move into the reducer
-    let i = clamp(floor(yViewPos / tileHeight), 0, sequences.length - 1);
+    const xInitPos = -(this.props.position.yPos % tileWidth);
+    let yPos = -(this.props.position.yPos % tileHeight);
+    let i = this.currentViewSequence();
     for (; i < sequences.length; i++) {
       const sequence = sequences[i].sequence;
       let xPos = xInitPos;
-      let j = clamp(floor(xViewPos / tileWidth), 0, sequence.length - 1);
+      let j = this.currentViewSequencePosition(sequence);
       for (; j < sequence.length; j++) {
         const el = sequence[j];
         this.ctx.font(this.props.tileFont);
@@ -70,9 +68,53 @@ class SequenceViewerComponent extends DraggingComponent {
     this.props.updatePosition(pos);
   }
 
+  // TODO: move into the reducer
+  /**
+   * Returns the first visible sequence on the current viewpoint.
+   * Might only be partially visible.
+   */
+  currentViewSequence() {
+    return clamp(floor(this.props.position.yPos / this.props.tileHeight), 0, this.props.sequences.length - 1)
+  }
+
+  /**
+   * Returns the first visible position on the current viewpoint.
+   * Might only be partially visible.
+   */
+  currentViewSequencePosition(sequence) {
+    return clamp(floor(this.props.position.xPos / this.props.tileWidth), 0, sequence.length - 1);
+  }
+
+  positionToSequence(pos) {
+    const sequences = this.props.sequences.raw;
+    const seqNr = clamp(floor((this.props.position.yPos + pos.yPos) / this.props.tileHeight), 0, sequences.length - 1);
+    const sequence = sequences[seqNr];
+
+    const position = clamp(floor((this.props.position.xPos + pos.xPos) / this.props.tileWidth), 0, sequence.sequence.length - 1);
+    return {
+      i: seqNr,
+      sequence,
+      position,
+      residue: sequence.sequence[position],
+    }
+  }
+
   componentDidUpdate() {
     // TODO: smarter updates
     this.draw();
+  }
+
+  onMouseMove = (e) => {
+    if (typeof this.dragFrame === "undefined") {
+      const [x, y] = Mouse.rel(e);
+      if (this.props.onResidueMouseEnter !== undefined) {
+        this.props.onResidueMouseEnter(this.positionToSequence({
+          xPos: x,
+          yPos: y,
+        }));
+      }
+    }
+    super.onMouseMove(e);
   }
 
   //shouldComponentUpdate(newProps) {
@@ -96,6 +138,26 @@ SequenceViewerComponent.PropTypes = {
    * Show the custom ModBar
    */
   showModBar: PropTypes.boolean,
+
+  /**
+   * Callback fired when the mouse pointer is entering a residue.
+   */
+  onResidueMouseEnter: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer is leaving a residue.
+   */
+  onResidueMouseLeave: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer clicked a residue.
+   */
+  onResidueMouseClick: PropTypes.func,
+
+  /**
+   * Callback fired when the mouse pointer clicked a residue.
+   */
+  onResidueMouseDoubleClick: PropTypes.func,
 };
 
 const mapStateToProps = state => {

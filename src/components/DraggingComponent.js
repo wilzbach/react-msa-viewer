@@ -62,6 +62,14 @@ class DraggingComponent extends Component {
     this.canvas = createRef();
     this.container = createRef();
 
+    // bind events (can't use static properties due to inheritance)
+    ["onMouseEnter", "onMouseLeave", "onMouseDown", "onMouseUp", "onMouseMove",
+      "onTouchStart", "onTouchMove", "onTouchEnd", "onTouchCancel", "onClick",
+      "draw",
+    ].forEach(prop => {
+        this[prop] = this[prop].bind(this);
+    });
+
     //this.onMouseMove = throttle(this.onMouseMove, msecsPerFps);
     //this.onTouchMove = throttle(this.onTouchMove, msecsPerFps);
 
@@ -69,6 +77,8 @@ class DraggingComponent extends Component {
     this.draw = throttle(this.draw, this.props.msecsPerFps);
 
     this.onViewpointChange();
+    // Define internal variables for explicitness
+    this.dragFrame = undefined;
     this.mouseMovePosition = undefined;
     this.touchMovePosition = undefined;
   }
@@ -106,15 +116,17 @@ class DraggingComponent extends Component {
     this.container.current.addEventListener('mouseleave', this.onMouseLeave);
     this.canvas.current.addEventListener('mousedown', this.onMouseDown);
     this.canvas.current.addEventListener('mouseup', this.onMouseUp);
+    this.canvas.current.addEventListener('mousemove', this.onMouseMove);
     this.canvas.current.addEventListener('touchstart', this.onTouchStart);
+    this.canvas.current.addEventListener('touchmove', this.onTouchMove);
     this.canvas.current.addEventListener('touchend', this.onTouchEnd);
     this.canvas.current.addEventListener('touchcancel', this.onTouchCancel);
-    this.canvas.current.addEventListener('click', this.onMove);
+    this.canvas.current.addEventListener('click', this.onClick);
     // TODO: should we react do window resizes dynamically?
     //window.addEventListener('resize', this.onResize)
   }
 
-  draw = () => {
+  draw() {
     // TODO: only update this if required
     this.ctx.startDrawingFrame();
     this.ctx.save();
@@ -135,14 +147,20 @@ class DraggingComponent extends Component {
   }
   */
 
-  onMouseDown = (e) => {
-    this.canvas.current.addEventListener('mousemove', this.onMouseMove);
+  onClick(e) {
+
+  }
+
+  onMouseDown(e) {
     //console.log("mousedown", e);
     this.startDragPhase(e);
   }
 
-  onMouseMove = (e) => {
+  onMouseMove(e) {
     //console.log("mousemove", e);
+    if (typeof this.dragFrame === "undefined") {
+      return;
+    }
     const pos = Mouse.abs(e);
     // TODO: use global window out and not this container's out for better dragging
     if (!this.isEventWithinComponent(e)) {
@@ -153,11 +171,11 @@ class DraggingComponent extends Component {
     this.mouseMovePosition = pos;
   }
 
-  onMouseUp = () => {
+  onMouseUp() {
     this.stopDragPhase();
   }
 
-  onMouseEnter = () => {
+  onMouseEnter() {
     this.setState(prevState => ({
       mouse: {
         ...prevState.mouse,
@@ -166,29 +184,32 @@ class DraggingComponent extends Component {
     }));
   }
 
-  onMouseLeave = () => {
+  onMouseLeave() {
     // TODO: use global window out and not this container's out for better dragging
     this.stopHoverPhase();
     this.stopDragPhase();
   }
 
-  onTouchStart = (e) => {
-    this.canvas.current.addEventListener('touchmove', this.onTouchMove);
+  onTouchStart(e) {
     console.log("touchstart", e);
     this.startDragPhase(e);
   }
 
-  onTouchMove = (e) => {
+  onTouchMove(e) {
+    if (typeof this.dragFrame === "undefined") {
+      return;
+    }
+
     console.log("touchmove", e);
     // TODO: can call mouse move with changedTouches[$-1], but it's reversed moving
     this.onMouseMove(e);
   }
 
-  onTouchEnd = () => {
+  onTouchEnd() {
     this.stopDragPhase();
   }
 
-  onTouchCancel = () => {
+  onTouchCancel() {
     this.stopDragPhase();
   }
 
@@ -224,12 +245,10 @@ class DraggingComponent extends Component {
    * Called at the end of a drag action.
    */
   stopDragPhase() {
-    this.canvas.current.removeEventListener('mousemove', this.onMouseMove);
     this.mouseMovePosition = undefined;
-    this.canvas.current.removeEventListener('touchmove', this.onTouchMove);
     this.touchMovePosition = undefined;
     window.cancelAnimationFrame(this.dragFrame);
-    this.dragFrame = null;
+    this.dragFrame = undefined;
     this.setState(prevState => ({
       mouse: {
         ...prevState.mouse,
@@ -260,10 +279,12 @@ class DraggingComponent extends Component {
     this.container.current.removeEventListener('mouseleave', this.onMouseLeave);
     this.canvas.current.removeEventListener('mouseup', this.onMouseUp);
     this.canvas.current.removeEventListener('mousedown', this.onMouseDown);
+    this.canvas.current.removeEventListener('mousemove', this.onMouseMove);
     this.canvas.current.removeEventListener('click', this.onClick);
     this.canvas.current.removeEventListener('touchstart', this.onTouchStart);
     this.canvas.current.removeEventListener('touchend', this.onTouchEnd);
     this.canvas.current.removeEventListener('touchcancel', this.onTouchCancel);
+    this.canvas.current.removeEventListener('touchmove', this.onTouchMove);
     this.stopDragPhase();
   }
 
