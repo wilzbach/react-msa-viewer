@@ -31,7 +31,7 @@ class SequenceViewerComponent extends DraggingComponent {
     const sequences = this.props.sequences.raw;
     const tileWidth = this.props.tileWidth;
     const tileHeight = this.props.tileHeight;
-    const xInitPos = -(this.props.position.yPos % tileWidth);
+    const xInitPos = -(this.props.position.xPos % tileWidth);
     let yPos = -(this.props.position.yPos % tileHeight);
     let i = this.currentViewSequence();
     for (; i < sequences.length; i++) {
