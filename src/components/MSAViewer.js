@@ -32,6 +32,14 @@ const labelsAndSequenceDiv = {
 // TODO: support using the child components in stand-alone mode
 class MSAViewerComponent extends Component {
 
+  static sequenceViewerPropsForwarded = [
+    "showModBar",
+    "onResidueMouseEnter",
+    "onResidueMouseLeave",
+    "onResidueClick",
+    "onResidueDoubleClick",
+  ];
+
   render() {
     const {children, msaStore, ...otherProps} = this.props;
     if (children) {
@@ -53,6 +61,14 @@ class MSAViewerComponent extends Component {
       const separatorPadding = {
         height: 10,
       };
+
+      // forward props to SequenceViewer
+      const sequenceViewerOptions = {};
+      MSAViewerComponent.sequenceViewerPropsForwarded.forEach(prop => {
+        if (this.props[prop] !== undefined) {
+          sequenceViewerOptions[prop] = this.props[prop];
+        }
+      });
       return (
         <MSAProvider store={msaStore}>
           <div style={labelsAndSequenceDiv}>
@@ -62,7 +78,7 @@ class MSAViewerComponent extends Component {
             <div>
               <OverviewBar height={overviewBarHeight} />
               <PositionBar />
-              <SequenceViewer />
+              <SequenceViewer {...sequenceViewerOptions} />
               <div style={separatorPadding} />
               <SequenceOverview />
             </div>

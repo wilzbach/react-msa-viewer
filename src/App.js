@@ -42,6 +42,9 @@ class App extends Component {
           sequence: "MEEPQ---SISE-PLSQETFSDLWKLLPPNNVLSTLPS-SDSIEE---LSENVAGWLEDP"
         },
       ],
+      onResidueClick: (e) => {
+        console.log("onResidueClick", e);
+      },
       colorScheme: "clustal",
     };
     return (

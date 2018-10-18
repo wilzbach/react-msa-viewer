@@ -20,7 +20,6 @@ import {MSAPropTypes} from '../PropTypes';
 
 import {
   isEqual,
-  omit,
   pick,
 } from 'lodash-es';
 
@@ -80,7 +79,7 @@ export const propsToRedux = (WrappedComponent) => {
     }
 
     render() {
-      const {msaStore, ...props} = omit(this.props, attributesToStore);
+      const {msaStore, ...props} = this.props;
       if (this.msaStore === undefined) {
         return (<div> Error initializing the MSAViewer. </div>)
       } else {
