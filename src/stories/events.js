@@ -6,7 +6,7 @@
 * LICENSE file in the root directory of this source tree.
 */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import {
@@ -50,4 +50,33 @@ storiesOf('Events', module)
       />
     </MSAViewer>
   ))
+  .add('Extra information on click', () => {
+    class ExtraInformation extends Component {
+      state = {
+      }
+      onResidueClick = (e) => {
+        this.setState({lastEvent: e});
+      }
+      render() {
+        return (
+          <div>
+            <MSAViewer sequences={sequences} >
+              <SequenceViewer
+                onResidueClick={this.onResidueClick}
+              />
+            </MSAViewer>
+            { this.state.lastEvent &&
+              <div>
+                Selection: {this.state.lastEvent.residue}
+                (from {this.state.lastEvent.sequence.name})
+              </div>
+            }
+          </div>
+        );
+      }
+    };
+    return (
+      <ExtraInformation />
+    );
+  })
 ;
